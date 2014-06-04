@@ -1,0 +1,80 @@
+\documentclass[pdftex,12pt,a4paper,twoside]{report}
+
+% Aaron Snsowell Thesis Document
+
+\usepackage[lmargin=3cm,rmargin=2cm,tmargin=2cm,bmargin=2cm]{geometry}
+\usepackage{setspace}
+\usepackage{framed}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{framed}
+\usepackage{fancybox}
+% Used for images
+\usepackage[pdftex]{graphicx}
+% Used to get nice (r) and (c) symbols
+\usepackage{textcomp}
+% Used for equations
+\usepackage{mathtools}
+% Used for headers
+\usepackage{fancyhdr}
+% Used for referencing sections
+\usepackage{nameref}
+% Used for nice " and ' quotes
+\usepackage{csquotes}
+
+% Set image path
+\graphicspath{{./images/}}
+
+
+% Set spacing and 'graph indentation
+\doublespacing
+\setlength{\parindent}{1.5cm}
+
+
+% Horizontal rule command
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+% Command to get current section
+\makeatletter
+\newcommand*{\currentname}{\@currentlabelname}
+\makeatother
+
+% Set up headers
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}{}}
+
+\fancyhead[RO, LE]{}
+\fancyhead[LO]{\small Light Field Deblurring for Robotics Applications}
+\fancyhead[RE]{\small \leftmark~(\rightmark)}
+\fancyfoot[c]{\small \thepage}
+
+\begin{document}
+
+% Title page
+\input{./title.tex}
+
+% Other pages
+\input{./abstract.tex}
+
+\tableofcontents
+\newpage
+
+\listoffigures
+\newpage
+
+\listoftables
+\newpage
+
+\input{./introduction.tex}
+\input{./background.tex}
+\input{./aim.tex}
+\input{./method.tex}
+\input{./results.tex}
+\input{./discussion.tex}
+\input{./conclusion.tex}
+
+\bibliographystyle{plain}
+\bibliography{bibliography/thesis_bibliography}
+
+\end{document}
