@@ -71,6 +71,7 @@ POSSIBLY 2-3 MORE PARAGRAPHS ABOUT RECENT LIGHT FIELD RESEARCH AND DEVELOPMENTS.
 
 
 \section{Motion Blur Formation}
+\label{sec:motion_blur_formation}
 
 Motion blur occurs in any non-theoretical camera due to a finite exposure time, combined with the presence of camera, or object motion within the scene.
 This is distinct from focal blur, which is a by-product of the optical behavior of any camera aperture larger than an infinitesimal point (a perfect pinhole aperture).
@@ -238,20 +239,63 @@ Blind deconvolution
 
 \section{Light Field Depth Estimation}
 
-\hl{
-Discuss general depth from correspondence problem here.
+As shown in section \ref{sec:motion_blur_formation}, de-blurring at all scene depths requires a depth map calibrated to be in real-world units such as meters.
+It was found that the Lytro firmware and/or desktop software computes a low-quality depth map from the Lytro Light Field images, returning integer depth values in an unknown or arbitrary unit.
+This depth map can be located within the Lytro image storage database and is contained in Lytro image files with the name \enquote*{dm.lfp}.
+The \enquote*{lfpsplitter} tool \cite{patel2013lfptools} was used to extract this data into a single-column text file format, after which Matlab was used to reshape this data into a depth map.
+To correctly re-shape the data, it had to be read in standard raster order (left to right, top to bottom), with an expected size of 330x330.
 
-Discuss the fact that Lytro LF depth maps (as output by the Lytro desktop software) are not consistent across different scenes.
-This was tested by taking a range of Lytro LF images in different scenes and comparing the depth map values with measured real-world distances.
-It was found that within a given LF image, the Lytro depth map was consistently linear, (with some occasional outliers where no scene structure existed), however the Lytro depth maps were not consistent across LF images of different scenes (Figure XXXX).
+Sample points from within the Lytro depth maps were compared with ground truth depth estimates for a range of real-world scenes, with the scene depth ranging up to 8 meters.
+Our initial analysis showed that after the rejection of outliers, the Lytro depth response \enquote*{$D$} was a linear function with real-world object depth \enquote*{$Z$}, however the specific linear function varied as the overall scene depth range changed.
+For example, scenes with an overall depth range less than 0.5m were found to be a good fit ($R^2 = 0.69$) with the linear function $Z(D) = 0.0291 \times D + 0.2114$, while scenes with a depth range of 0.5-2m were a a good fit ($R^2 = 0.53$) with the function $Z(D) = 0.1436 \times D + 0.8597$.
+Figure XXXX shows these results in graph format.
 
-[Figure XXXX here showing LF depth consistency test plots]
+\begin{figure}[h]
+\centering
+\caption[Real World Depth vs. Lytro Depth Response]{Real-world depth vs. Lytro Depth response. The data has been binned into three categories based on overall scene depth range.}
+\label{fig:depth_real_world_vs_lytro_response}
+\includegraphics[width=\textwidth]{depth_real_world_vs_lytro_response.pdf}
+\end{figure}
 
-Discuss the possibility of using other depth methods (e.g. depth from combining defocus and correspondence) - talk about poor quality of depth maps recovered using this technique.
+It was found experimentally that the Lytro-generated depth maps have a minimum recoverable depth range of \nicetilde5cm and that the presence of glare prevents accurate depth estimation (see Figure \ref{fig:ruler_glare_min_dist}).
+Furthermore, it was found that the presence of motion blur or lack of scene structure reduced the quality of the depth map (see Figures XXXX and \ref{fig:blur_corrupts_depth}).
+The reduction in quality due to glare is expected due to the lambertian scene assumption made in many light field computational photography algorithms \cite{bishop2009light, liang2011light, baker2003shape} and the reduction is quality due to motion blur or lack of structure suggests the Lytro software is using a dense correlation based depth estimation method.
 
-[Figure XXXX example depth maps from Lytro software, kinect and defocus and correspondence]
 
-Talk about degradation of Lytro depth maps with increasing motion blur, as in Figure XXXX.
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{ruler_glare_min_dist.pdf}
+\caption[Minimum depth map distance and the effect of glare]{An example light field image, and the Lytro depth map response. Note the lack of depth data where glare is present, and below Z = 5cm.}
+\label{fig:ruler_glare_min_dist}
+\end{figure}
 
-[Figure XXXX The quality of Lytro depth maps degrades with increasing blur]
-}
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{depth_lack_of_structure.png}
+\caption[Lack of Scene Structure Corrupts Lytro Depth Estimation]{An example light field image and the Lytro depth response. Note the lack of clear structure in some parts of the image results in large regions without depth variation.}
+\label{fig:depth_lack_of_structure}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{blur_corrupts_depth.png}
+\caption[Motion Blur Corrupts Lytro Depth Estimation]{The same scene photographed three times with the Lytro camera, with progressively more motion blur. Note the reduction in the quality and consistency of the depth response.}
+\label{fig:blur_corrupts_depth}
+\end{figure}
+
+These findings suggested that if rough knowledge of the scene depth can be obtained, it is possible to calibrate the Lytro depth maps into units of meters, allowing real-world depths to be estimated.
+It is suggested that in a real-world application, an infra-red/ultrasound based focal length sensor (as found on many commercial cameras) could be used for this purpose.
+Alternately, user-supplied a-priori knowledge of a robotic operating environment, or a user-selected 'scene' setting on a commercial camera (e.g. outdoors, indoors, portrait etc.) could be used here.
+
+The possibility of using other depth estimation methods was explored.
+In particular, the Depth from Combining Defocus and Correspondence method by Tao et al. \cite{tao2013depth} was tried.
+Using the supplied Matlab source code \cite{tao2013depthwebsite}, depth maps were found to be extremely noisy and completely unusable (see figure \ref{fig:defocus_correspondence_depth}).
+It is possible this was due to their code being tuned specifically for their Lytro camera, however due to discovering the more readily available Lytro depth data, this possibility was not explored further.
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=7cm]{defocus_correspondence_depth.png}
+\caption[Depth Map from combining Defocus and Correspondence]{An example depth map result from using Defocus and Correspondence by Tao et al. \cite{tao2013depthwebsite} - the input light field is the same as in Figure \ref{fig:depth_lack_of_structure}.}
+\label{fig:defocus_correspondence_depth}
+\end{figure}
