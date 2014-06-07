@@ -1,0 +1,57 @@
+
+\chapter{Results and Discussion}
+\label{chap:results_and_discussion}
+
+\hl{REWORK THIS}
+
+\begin{itemize}
+
+\item Show each light field captured, the depth information and the result after de-blurring, and compare with 2D deblurring methods.
+
+\item Show the noise and Q-increase for each light field, compared with other 2D de-blurring methods.
+
+\end{itemize}
+
+
+\hl{REWORK ALL OF THIS}
+
+\section{Limitations of thesis and results}
+
+\begin{itemize}
+\item Requires external calibration of depth map
+\item Velocity information is provided a-priori
+\end{itemize}
+
+
+\section{Recap / discuss results}
+
+Blah blah blah.
+
+\section{Implications of results}
+
+\begin{itemize}
+\item It is possible to de-blur a LF image, at all scene depths
+\end{itemize}
+
+
+\section{Further research and or extrapolation}
+
+\begin{itemize}
+
+\item LF Depth Map quality drops when motion blur is present (show house sequence of depth maps). This suggests that better, blur-resistant LF depth algorithms are needed, or that the method presented here could be adapted to an iterative form (depth->deblur->depth again->deblur again).
+
+\item LF Depth confidence map was not used at all - this could be used to improve the de-blurring process. E.g. in regions of low depth confidence, all candidate de-blurred pixels are compared in a local neighborhood and the sharpest pixels are selected.
+
+\item Generalise to camera rotation or arbitrary camera trajectory
+
+\item Generalise to object motion (local de-blurring vs. global deblurring)
+
+\item Explore with other shapes of LF (e.g. more angular resolution)
+
+\item Future Work and Extensions - Very last item in discussion
+
+\end{itemize}
+
+
+
+

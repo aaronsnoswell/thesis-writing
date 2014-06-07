@@ -2,7 +2,7 @@
 
 % Aaron Snsowell Thesis Document
 
-\usepackage[lmargin=3cm,rmargin=2cm,tmargin=2cm,bmargin=2cm]{geometry}
+\usepackage[lmargin=2cm,rmargin=3cm,tmargin=2cm,bmargin=2cm]{geometry}
 \usepackage{setspace}
 \usepackage{framed}
 \usepackage[usenames,dvipsnames]{xcolor}
@@ -20,6 +20,10 @@
 \usepackage{nameref}
 % Used for nice " and ' quotes
 \usepackage{csquotes}
+% Used to refer to things using their names
+\usepackage{nameref}
+% Used for highlighting TODO sections
+\usepackage{soul}
 
 % Set image path
 \graphicspath{{./images/}}
@@ -32,11 +36,6 @@
 
 % Horizontal rule command
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
-
-% Command to get current section
-\makeatletter
-\newcommand*{\currentname}{\@currentlabelname}
-\makeatother
 
 % Set up headers
 \pagestyle{fancy}
@@ -67,11 +66,9 @@
 \newpage
 
 \input{./introduction.tex}
-\input{./background.tex}
-\input{./aim.tex}
-\input{./method.tex}
-\input{./results.tex}
-\input{./discussion.tex}
+\input{./plenoptic_deblurring.tex}
+\input{./experimental_method.tex}
+\input{./results_and_discussion.tex}
 \input{./conclusion.tex}
 
 \bibliographystyle{plain}

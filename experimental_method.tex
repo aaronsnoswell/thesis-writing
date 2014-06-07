@@ -1,5 +1,6 @@
 
-\chapter{Method}
+\chapter{Experimental Method}
+\label{chap:experimental_method}
 
 
 \section{Development of Linear Motion Platform}
@@ -7,7 +8,7 @@
 A robotic linear motion platform was developed using Lego\textsuperscript{\textregistered} Mindstorms\textsuperscript{\textregistered} parts.
 The platform was designed to carry a Lytro camera and a Nikon D5100 DSLR camera side-by-side as close as possible, with support for both cameras made out of Lego parts.
 The motion platform consisted of a wheeled based that carried the cameras attached by a sewing thread to a drum, driven by two Mindstorms motors.
-The drum was manually held in place during operation, and the Matlab RWHT NXT Toolbox \cite{rwth07toolbox} was used to interface with the motors.
+The drum was manually held in place during operation, and the Matlab RWHT NXT Toolbox \cite{rwth2007toolbox} was used to interface with the motors.
 
 The angular velocity of the drum was manually calibrated using a stopwatch and ruler, allowing a desired velocity and linear distance to set in software.
 Figure \ref{fig:motion_platform} shows the design of the linear motion platform.
@@ -18,7 +19,7 @@ Figure \ref{fig:motion_platform} shows the design of the linear motion platform.
 
 \includegraphics[width=\textwidth]{motion_platform}
 
-\caption{Linear motion platform design}
+\caption[Linear motion platform design]{Linear motion platform design}
 \label{fig:motion_platform}
 
 \end{figure}
@@ -40,7 +41,7 @@ Figure \ref{fig:scene_description} shows the experimental scene configuration.
 
 \includegraphics[width=\textwidth]{scene_contents}
 
-\caption{Experimental scene layout, shown from above}
+\caption[Experimental scene layout]{Experimental scene layout, shown from above}
 \label{fig:scene_description}
 
 \end{figure}
@@ -85,21 +86,21 @@ Lytro .lfp files were converted to raw image files and metadata files using the 
 The raw image files were read using the Matlab LF Toolbox, and color correction applied.
 The a-priori depth maps were read as images and the depth at several points in the depth map specified interactively using a graphical interface.
 
-NEED TO TALK HERE ABOUT THE FACT THAT A-PRIORI CAMERA MOTION VELOCITY INFORMATION WAS USED, HOWEVER IN A REAL ENVIRONMENT OTHER SOURCES COULD BE USED TO GET THIS INFORMATION, E.G. THE BUILT-IN LYTRO ACCELEROMETER, OR A GPS OR OTHER SENSOR.
+\hl{NEED TO TALK HERE ABOUT THE FACT THAT A-PRIORI CAMERA MOTION VELOCITY INFORMATION WAS USED, HOWEVER IN A REAL ENVIRONMENT OTHER SOURCES COULD BE USED TO GET THIS INFORMATION, E.G. THE BUILT-IN LYTRO ACCELEROMETER, OR A GPS OR OTHER SENSOR.}
 
 A least-squares regression was then performed to find a function mapping depth map intensity to real world depth.
 To reduce processing time, the depth map was then posterized into a user-specified number of 'depth planes', each with a corresponding pixel mask.
 The posterization was performed by applying 1-dimensional k-means clustering to the depth map histogram, using random seed locations.
 A user-specified tolerance was used to terminate the k-means operation.
-Figure XXXX shows the k-means clustering process.
+\hl{Figure XXXX} shows the k-means clustering process.
 
-[Figure XXXX goes here]
+\hl{[Figure XXXX goes here]}
 
 To de-blur the light field, all possible sup-aperture slices were taken and individually de-convoled once at every scene depth using the Richardson Lucy method, as implemented in the Matlab command 'deconvlucy'.
 The de-convoled sub-aperture images were then combined, using the depth plane pixel masks.
-This process is described in pseudocode in Listing XXXX.
+This process is described in pseudocode in \hl{Listing XXXX}.
 
-[Listing XXXX goes here (pseudocode describing de-blurring)]
+\hl{[Listing XXXX goes here (pseudocode describing de-blurring)]}
 
 
 %LF_deblurred = new_empty_lf();
