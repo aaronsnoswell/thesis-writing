@@ -3,6 +3,7 @@
 \label{chap:plenoptic_deblurring}
 
 \section{Light Field Theory}
+\label{sec:light_field_theory}
 
 %Side Note
 %The first practical work using light fields dates back to a photographic technique known as ‘Integral Photography’, developed by Gabriel Lipmann in 1908.
@@ -29,45 +30,42 @@ where $V_x$, $V_y$ and $V_z$ are the spatial dimensions, $\theta$ and $\phi$ are
 The plenoptic function in this form was first described by Adelson and Bergen in 1991 \cite{adelson1991plenoptic}.
 Adelson and Bergen developed a light field theory by asking the fundamental question \enquote{What can be seen?} They stressed that the plenoptic function is the sole visual communication link between physical objects and the eye.
 They also suggested that the function of \enquote*{early vision} in biological and artificial organisms is to sample the derivative of this function along various dimensions such as \enquote*{change in colour with x} or \enquote*{change in brightness with time}.
-\hl{GIVE DETAIL ABOUT SAMPLING PLENOPTIC FUNCTION EXAMPLES FROM ADELSON PAPER.}
+GIVE DETAIL ABOUT SAMPLING PLENOPTIC FUNCTION EXAMPLES FROM ADELSON PAPER.
 
 In modern computer vision literature a number of parameterisations are used to describe the plenoptic function.
 These different representations each provide new insights into the information contained in the light field.
 
-\hl{LIGHT SLAB DESCRIPTION AND DISCUSSION.}
+LIGHT SLAB DESCRIPTION AND DISCUSSION.
 
-\hl{LIGHT TUBE DESCRIPTION AND DISCUSSION.}
+LIGHT TUBE DESCRIPTION AND DISCUSSION.
 
-\hl{POLAR AND/OR DUAL PLANE DESCRIPTION AND DISCUSSION?}
+POLAR AND/OR DUAL PLANE DESCRIPTION AND DISCUSSION?
 
 
-Traditional cameras generally sample the Light Field along two spatial dimensions (x and y pixel locations) and in the colour dimension (normally with Red, Green and Blue photon collectors), however there are many instances in which sampling more dimensions of the light field would be beneficial. To this end, in 1996 two light field papers were included in the Siggraph conference proceedings; ‘Light Field Rendering’ by Levoy et al. and ‘The Lumigraph’ by Gortler et al \hl{[REFERENCES]}. Both these papers described independent research into means for capturing more information from the plenoptic function. Importantly, both groups made the observation that, while the full plenoptic function is seven dimensional, for a region of space free of occluding objects, one space dimension can be disregarded, and the 3D structure of the scene still fully recovered. \hl{GO INTO MORE DETAIL ABOUT OCCLUSION FREE SPACE SIMPLIFICATION HERE}. This approximation is the basis for most modern light field cameras sampling in four dimensions, and paved the way for the creation of the first practical light field cameras.
+Traditional cameras generally sample the Light Field along two spatial dimensions (x and y pixel locations) and in the colour dimension (normally with Red, Green and Blue photon collectors), however there are many instances in which sampling more dimensions of the light field would be beneficial. To this end, in 1996 two light field papers were included in the Siggraph conference proceedings; ‘Light Field Rendering’ by Levoy et al. and ‘The Lumigraph’ by Gortler et al [REFERENCES]. Both these papers described independent research into means for capturing more information from the plenoptic function. Importantly, both groups made the observation that, while the full plenoptic function is seven dimensional, for a region of space free of occluding objects, one space dimension can be disregarded, and the 3D structure of the scene still fully recovered. GO INTO MORE DETAIL ABOUT OCCLUSION FREE SPACE SIMPLIFICATION HERE. This approximation is the basis for most modern light field cameras sampling in four dimensions, and paved the way for the creation of the first practical light field cameras.
 
 All physical cameras (or eyes) can only ever observe a small subset (various ‘slices’) of the ambient light field. As an example, consider the human visual system. The human visual system takes several million samples from the angular dimensions, three points from the lambda dimension (roughly corresponding to the frequencies known as ‘Blue’, ‘Green’ and ‘Red’) and only two samples from the Vx dimension (one each for the left and right eyes). In addition to this, the distribution of sample points is not always linear. The cone cells responsible for detecting colour in the human eye are much more populous in the fovetal region near the centre of the eye, while rod cells that operate in low-light conditions are clustered around the outer edges of the retina.
 
 The work done by Gortler and Levoy (et al.) demonstrated it was possible to capture 4D light field information using a traditional camera sensor with some modifications. While there is active research in developing angle-sensitive pixels, modern light field cameras typically encode angular ray information by mapping ray angles to locations on a traditional 2D camera sensor. Thus, regular spatial resolution is directly traded to gain angular resolution.
 
 For example the Lytro light field camera used in this paper has an 11 mega-pixel sensor chip, however a spatial and angular resolution of only 1080x1080 and 10x10 respectively. The trade-off between angular resolution and spatial resolution is unavoidable when using this technique, and the choice of angular and spatial resolutions limit the functions that can be performed with the captured light field.
-\hl{GIVE EXMPLES OF HOW NOT ALL LIGHT FIELDS ARE EQUAL.
-DISCUSS THE BENEFITS/DRAWBACKS OF THE LYTRO CAMERA CONFIGURATION}.
+GIVE EXMPLES OF HOW NOT ALL LIGHT FIELDS ARE EQUAL.
+DISCUSS THE BENEFITS/DRAWBACKS OF THE LYTRO CAMERA CONFIGURATION.
 4D light field sampling has also been performed using multiple traditional cameras separated spatially in a grid, or separated temporally.
 
-\hl{GO INTO MORE DETAIL ABOUT LYTRO CAMRERA AND BRIEFLY COMPARE LYTRO WITH RAYTRIX AND OTHER LF CAMERAS (STANFORD MULTI CAMERA ARRAY).
+GO INTO MORE DETAIL ABOUT LYTRO CAMRERA AND BRIEFLY COMPARE LYTRO WITH RAYTRIX AND OTHER LF CAMERAS (STANFORD MULTI CAMERA ARRAY).
 ALSO DISCUSS SYNTHETIC LIGHT FIELD CREATION AND GIVE EXMAPLES.
 HIGHLIGHT BENEFITS AND DRAWBACKS OF SYNTHETIC LIGHT FIELDS VS REAL TEST DATA.
 MENTION THE APPEARANCE OF LIGHT FIELD CAMERAS ON MOBILE PHONES.
 MENTION ANDROID LF CAMERA.
-}
 
 Mapping of ray angles to the 2D camera plane is typically done by placing either a lenslet or mirror array, or a cosine pinhole mask within the light ray path. These approaches are functionally equivalent, however each has disadvantages and benefits. A lenslet or mirror array is di cult to machine and requires custom hardware and precision positioning. On the other hand, a pinhole array can be added to some modern cameras with little modification, however blocks a large majority of the incoming light, thus requiring longer exposure times and increasing the likelihood of motion blurring.
 
-\hl{
 2 OR 3 PARAGRAPHS ABOUT LOW RESOLUTION AND LIGHT FIELD SUPER RESOLUTION PAPER.
 
 POSSIBLY 2-3 MORE PARAGRAPHS ABOUT RECENT LIGHT FIELD RESEARCH AND DEVELOPMENTS.
 
 2 SUMMARISING PARAGRAPHS BRINGING ALL OF THIS INFORMATION BACK TO MY THESIS – HIGHLIGHTING WHAT PARTS I’M GOING TO BE USING, WHAT LF SYMBOLS AND CONVENTIONS I’LL BE USING ETC.
-}
 
 
 \section{Motion Blur Formation}
@@ -136,14 +134,10 @@ Z \\
 Here the intrinsic matrix $\alpha$ and $\beta$ terms are the camera focal length, scaled to be in units of x and y pixels respectively, $s$ is a shearing factor that describes the shear of the camera sensor (see Figure \ref{fig:intrinsic_shear}) and $u_0$ and $v_0$ are the x and y pixel locations of the optical axis of the camera.
 
 \begin{figure}[h]
-
 \centering
-
 \includegraphics[width=4cm]{pixel_shear.pdf}
-
 \caption[Camera intrinsic matrix shear term]{Camera intrinsic matrix shear term description, $s = \beta\tan(\theta)$. Figure from \cite{pollefeys2002visual}}
 \label{fig:intrinsic_shear}
-
 \end{figure}
 
 Assuming the world frame coincides with the camera location and orientation, and assuming linear, horizontal camera motion at velocity $v_c$ meters per second with an exposure time of $t_e$ seconds, the blur width of a point source in the scene can be derived;
@@ -174,12 +168,9 @@ This is shown visually in Figure \ref{fig:psf_3d}.
 \begin{figure}[h]
 
 \centering
-
 \includegraphics[width=\textwidth]{psf_3d.pdf}
-
 \caption[Visualisation of a 3D Point Spread Function]{Visualisation of a 3D Linear Motion Point Spread Function, with $x$, $y$ and $Z$ as the dimensions}
 \label{fig:psf_3d}
-
 \end{figure}
 
 Equation \ref{eq:blur_width_simple} was verified experimentally by taking several photos with a Lytro camera at a controlled velocity and measuring the blur width and depth of objects within the scene.
@@ -187,15 +178,10 @@ Only the central sub-aperture image from the light field was used for simplicity
 Figure \ref{fig:blur_vs_width} shows the measured results along with the predicted curve.
 
 \begin{figure}[h]
-
 \centering
-
 \caption[Edge blur width vs. Depth]{Edge blur width vs. Depth - Measured, Predicted and $L^{2}$ regression}
 \label{fig:blur_vs_width}
-
 \includegraphics[width=\textwidth]{blur_vs_depth.pdf}
-
-
 \end{figure}
 
 As can be seen, the equation matched the theoretical curve very closely, indicating that equation \ref{eq:blur_width_simple} is a good fit for an individual sub-aperture image within a light field.
@@ -206,8 +192,8 @@ This possibility is discussed in Chapter \ref{chap:results_and_discussion} (\nam
 
 
 \section{Image De-blurring}
+\label{sec:image_deblurring}
 
-\hl{
 Image formation
 
 Sources of degradation during image formation:
@@ -235,9 +221,10 @@ Iterative Deconvolution
 Unsharp Masking
 
 Blind deconvolution
-}
+
 
 \section{Light Field Depth Estimation}
+\label{sec:light_field_depth_estimation}
 
 As shown in section \ref{sec:motion_blur_formation}, de-blurring at all scene depths requires a depth map calibrated to be in real-world units such as meters.
 It was found that the Lytro firmware and/or desktop software computes a low-quality depth map from the Lytro Light Field images, returning integer depth values in an unknown or arbitrary unit.
@@ -245,20 +232,21 @@ This depth map can be located within the Lytro image storage database and is con
 The \enquote*{lfpsplitter} tool \cite{patel2013lfptools} was used to extract this data into a single-column text file format, after which Matlab was used to reshape this data into a depth map.
 To correctly re-shape the data, it had to be read in standard raster order (left to right, top to bottom), with an expected size of 330x330.
 
-Sample points from within the Lytro depth maps were compared with ground truth depth estimates for a range of real-world scenes, with the scene depth ranging up to 8 meters.
+Further research and analysis is needed to more fully quantify the Lytro depth response function, however for the purposes of this thesis an initial investigation was performed.
+Sample points from within the Lytro depth maps were compared with real-world depth estimates for a range of real-world scenes, with the scene depth ranging up to 8 meters.
 Our initial analysis showed that after the rejection of outliers, the Lytro depth response \enquote*{$D$} was a linear function with real-world object depth \enquote*{$Z$}, however the specific linear function varied as the overall scene depth range changed.
-For example, scenes with an overall depth range less than 0.5m were found to be a good fit ($R^2 = 0.69$) with the linear function $Z(D) = 0.0291 \times D + 0.2114$, while scenes with a depth range of 0.5-2m were a a good fit ($R^2 = 0.53$) with the function $Z(D) = 0.1436 \times D + 0.8597$.
-Figure XXXX shows these results in graph format.
+For example, scenes with an overall depth range less than 0.5m were found to be a good fit ($R^2 = 0.69$) with the linear function $Z(D) = 0.0291 \times D + 0.2114$, while scenes with a depth range of 0.5-2m were a moderately good fit ($R^2 = 0.53$) with the function $Z(D) = 0.1436 \times D + 0.8597$.
+Figure \ref{fig:depth_real_world_vs_lytro_response} shows these results in graph format.
 
 \begin{figure}[h]
 \centering
-\caption[Real World Depth vs. Lytro Depth Response]{Real-world depth vs. Lytro Depth response. The data has been binned into three categories based on overall scene depth range.}
+\caption[Lytro depth response vs. real-world depth]{Lytro depth response vs. real-world depth. The data has been binned into three categories based on overall scene depth range.}
 \label{fig:depth_real_world_vs_lytro_response}
 \includegraphics[width=\textwidth]{depth_real_world_vs_lytro_response.pdf}
 \end{figure}
 
 It was found experimentally that the Lytro-generated depth maps have a minimum recoverable depth range of \nicetilde5cm and that the presence of glare prevents accurate depth estimation (see Figure \ref{fig:ruler_glare_min_dist}).
-Furthermore, it was found that the presence of motion blur or lack of scene structure reduced the quality of the depth map (see Figures XXXX and \ref{fig:blur_corrupts_depth}).
+Furthermore, it was found that the presence of motion blur or lack of scene structure reduced the quality of the depth map (see Figures \ref{fig:depth_lack_of_structure} and \ref{fig:blur_corrupts_depth}).
 The reduction in quality due to glare is expected due to the lambertian scene assumption made in many light field computational photography algorithms \cite{bishop2009light, liang2011light, baker2003shape} and the reduction is quality due to motion blur or lack of structure suggests the Lytro software is using a dense correlation based depth estimation method.
 
 
@@ -272,7 +260,7 @@ The reduction in quality due to glare is expected due to the lambertian scene as
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{depth_lack_of_structure.png}
-\caption[Lack of Scene Structure Corrupts Lytro Depth Estimation]{An example light field image and the Lytro depth response. Note the lack of clear structure in some parts of the image results in large regions without depth variation.}
+\caption[Lack of Scene Structure Corrupts Lytro Depth Estimation]{An example light field image and the Lytro depth response. Note the lack of clear structure in some parts of the image (e.g. on the stuffed toy's face and body, and in the background) results in large regions without depth variation, despite the presence of real-world depth change.}
 \label{fig:depth_lack_of_structure}
 \end{figure}
 
@@ -285,11 +273,11 @@ The reduction in quality due to glare is expected due to the lambertian scene as
 
 These findings suggested that if rough knowledge of the scene depth can be obtained, it is possible to calibrate the Lytro depth maps into units of meters, allowing real-world depths to be estimated.
 It is suggested that in a real-world application, an infra-red/ultrasound based focal length sensor (as found on many commercial cameras) could be used for this purpose.
-Alternately, user-supplied a-priori knowledge of a robotic operating environment, or a user-selected 'scene' setting on a commercial camera (e.g. outdoors, indoors, portrait etc.) could be used here.
+Alternately, user-supplied a-priori knowledge of a robotic operating environment, or a user-selected \enquote*{scene} setting on a commercial camera (e.g. outdoors, indoors, portrait etc.) could be used here.
 
 The possibility of using other depth estimation methods was explored.
 In particular, the Depth from Combining Defocus and Correspondence method by Tao et al. \cite{tao2013depth} was tried.
-Using the supplied Matlab source code \cite{tao2013depthwebsite}, depth maps were found to be extremely noisy and completely unusable (see figure \ref{fig:defocus_correspondence_depth}).
+Using the supplied Matlab source code \cite{tao2013depthwebsite}, depth maps were found to be extremely noisy and completely unusable (see Figure \ref{fig:defocus_correspondence_depth}).
 It is possible this was due to their code being tuned specifically for their Lytro camera, however due to discovering the more readily available Lytro depth data, this possibility was not explored further.
 
 

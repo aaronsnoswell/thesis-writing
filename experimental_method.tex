@@ -4,6 +4,7 @@
 
 
 \section{Development of Linear Motion Platform}
+\label{sec:development_of_linear_motion_platform}
 
 A robotic linear motion platform was developed using Lego\textsuperscript{\textregistered} Mindstorms\textsuperscript{\textregistered} parts.
 The platform was designed to carry a Lytro camera and a Nikon D5100 DSLR camera side-by-side as close as possible, with support for both cameras made out of Lego parts.
@@ -26,6 +27,7 @@ Figure \ref{fig:motion_platform} shows the design of the linear motion platform.
 
 
 \section{Scene Design}
+\label{sec:scene_design}
 
 The photographic scenes were set up in a room with no external facing windows to ensure the scene brightness could be controlled.
 Three 60 watt incandescent ceiling light bulbs were used for ambient lighting and a single 72 watt diffuse incandescent desk lamp was used to provide extra light.
@@ -48,6 +50,7 @@ Figure \ref{fig:scene_description} shows the experimental scene configuration.
 
 
 \section{Image Capture}
+\label{sec:image_capture}
 
 A Lytro camera with firmware version 1.2.2 was used for the light field photography.
 The Lytro camera was configured using the following settings.
@@ -82,8 +85,9 @@ Lytro .lfp files were converted to raw image files and metadata files using the 
 
 
 \section{Image Processing and Deconvolution}
+\label{sec:image_processing_and_deconvolution}
 
-The raw image files were read using the Matlab LF Toolbox, and color correction applied.
+The raw image files were read using the Matlab LF Toolbox.
 The a-priori depth maps were read as images and the depth at several points in the depth map specified interactively using a graphical interface.
 
 \hl{NEED TO TALK HERE ABOUT THE FACT THAT A-PRIORI CAMERA MOTION VELOCITY INFORMATION WAS USED, HOWEVER IN A REAL ENVIRONMENT OTHER SOURCES COULD BE USED TO GET THIS INFORMATION, E.G. THE BUILT-IN LYTRO ACCELEROMETER, OR A GPS OR OTHER SENSOR.}
@@ -125,6 +129,7 @@ This process is described in pseudocode in \hl{Listing XXXX}.
 
 
 \section{Quantitative Analysis}
+\label{sec:quantitative_analysis}
 
 Two quantitative measures were used to compare de-blurred light fields.
 A 'Q-Factor' was computed to measure the reduction in image blur and the Root-Mean-Square Error (RMSE) was estimated to measure the degree of noise amplification introduced by the de-convolution.
