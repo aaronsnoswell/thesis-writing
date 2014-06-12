@@ -30,43 +30,67 @@ where $V_x$, $V_y$ and $V_z$ are the spatial dimensions, $\theta$ and $\phi$ are
 The plenoptic function in this form was first described by Adelson and Bergen in 1991 \cite{adelson1991plenoptic}.
 Adelson and Bergen developed a light field theory by asking the fundamental question \enquote{What can be seen?} They stressed that the plenoptic function is the sole visual communication link between physical objects and the eye.
 They also suggested that the function of \enquote*{early vision} in biological and artificial organisms is to sample the derivative of this function along various dimensions such as \enquote*{change in colour with x} or \enquote*{change in brightness with time}.
-GIVE DETAIL ABOUT SAMPLING PLENOPTIC FUNCTION EXAMPLES FROM ADELSON PAPER.
 
-In modern computer vision literature a number of parameterisations are used to describe the plenoptic function.
-These different representations each provide new insights into the information contained in the light field.
+In computer vision literature, many different representations of the light field have been proposed, each emphasising different aspects of the plenoptic function.
+McMillan and Bishop discuss the representation of 5D light field images ($V_x$, $V_y$, $V_z$, $\theta$ and $\phi$) as a set of multiple panoramic images taken at different physical locations \cite{mcmillan1995plenoptic}.
+Importantly, in free-space (space free of occluding objects), one of the spatial dimensions is redundant, a consequence of the fact that radiance does not change along a line unless blocked \cite{levoy1996light}.
+Thus, for free space, the 5th light field dimension can be dropped, giving a 4D light field definition.
 
-LIGHT SLAB DESCRIPTION AND DISCUSSION.
+Levoy and Hanrahan describe a parameterisation for the 4D light field which they term a \enquote*{light slab} \cite{levoy1996light}.
+In this parameterisation, they describe a light ray by it's intersection through two arbitrarily placed planes in world space (Figure \ref{fig:light_slab}).
+By their convention, both planes range from 0 to 1, and the dimensions are labeled $u$ and $v$, and $s$ and $t$ for the first and second planes respectively.
+Levoy and Hanrahan's paper is in the context of computational photography and deals with reconstructing novel views from 4D light fields.
+They select this parameterisation due to it's computational efficiency, intuitive set of parameters and the ability to generate a uniform sampling of the light field.
 
-LIGHT TUBE DESCRIPTION AND DISCUSSION.
+\begin{figure}[h]
+\centering
+\includegraphics[width=12cm]{light_slab.pdf}
+\caption[The Light Slab Parameterisation of a 4D Light Field]{
+The Light Slab Parameterisation of a 4D Light Field.
+A light ray is defined as passing through two arbitrary planes in world-space.
+Image from \cite{levoy1996light}.
+}
+\label{fig:light_slab}
+\end{figure}
 
-POLAR AND/OR DUAL PLANE DESCRIPTION AND DISCUSSION?
+As early as 1936, before the light field had been described in it's modern form, Arun Gershun formulated an alternate form of light field parameterisation, known as a \enquote*{light tube} \cite{gershun1939light} (Figure \ref{fig:light_tube}).
+Gershun's work centered around describing the propagation of light though calculus and analytical geometry.
+His light tube parameterisation provides a way to define light radiance as a function of position and direction in a scene with fixed illumination \cite{levoy2010lectureslides}.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=12cm]{light_tube.pdf}
+\caption[The Light Tube Parameterisation of a 4D Light Field]{
+The Light Tube Parameterisation of a 4D Light Field.
+Radiance along a ray can be thought of as the amount of light traveling along all possible straight lines through a tube whose size is determined by it's solid angle and cross-sectional area.
+Image from \cite{levoy2006light}.
+}
+\label{fig:light_tube}
+\end{figure}
 
-Traditional cameras generally sample the Light Field along two spatial dimensions (x and y pixel locations) and in the colour dimension (normally with Red, Green and Blue photon collectors), however there are many instances in which sampling more dimensions of the light field would be beneficial. To this end, in 1996 two light field papers were included in the Siggraph conference proceedings; ‘Light Field Rendering’ by Levoy et al. and ‘The Lumigraph’ by Gortler et al [REFERENCES]. Both these papers described independent research into means for capturing more information from the plenoptic function. Importantly, both groups made the observation that, while the full plenoptic function is seven dimensional, for a region of space free of occluding objects, one space dimension can be disregarded, and the 3D structure of the scene still fully recovered. GO INTO MORE DETAIL ABOUT OCCLUSION FREE SPACE SIMPLIFICATION HERE. This approximation is the basis for most modern light field cameras sampling in four dimensions, and paved the way for the creation of the first practical light field cameras.
+While the many light field parameterisation are useful theoretical tools, recent research has sought means for physically sampling the light field.
+Traditional cameras generally sample the Light Field along two dimensions (x and y pixel locations) and in the colour dimension (normally with Red, Green and Blue photon collectors).
+There are many instances however in which sampling more dimensions of the light field would be beneficial.
+To this end, in 1996 two light field papers were included in the Siggraph conference proceedings; \enquote*{Light Field Rendering} by Levoy et al. and \enquote*{The Lumigraph} by Gortler et al. \cite{levoy1996light, gortler1996lumigraph}.
+Both these papers described independent research into means for physically sampling more information from the plenoptic function than a regular camera.
 
-All physical cameras (or eyes) can only ever observe a small subset (various ‘slices’) of the ambient light field. As an example, consider the human visual system. The human visual system takes several million samples from the angular dimensions, three points from the lambda dimension (roughly corresponding to the frequencies known as ‘Blue’, ‘Green’ and ‘Red’) and only two samples from the Vx dimension (one each for the left and right eyes). In addition to this, the distribution of sample points is not always linear. The cone cells responsible for detecting colour in the human eye are much more populous in the fovetal region near the centre of the eye, while rod cells that operate in low-light conditions are clustered around the outer edges of the retina.
+The work done by Gortler and Levoy (et al.) demonstrated it was possible to capture 4D light field information using a traditional camera sensor with some modifications.
+While there is ongoing active research in developing angle-sensitive pixels \cite{wang2009angle, wang2011angle, wang2012angle}, Gortler and Levoy (et al.) described light field cameras that encode angular ray information by mapping ray angles to 2D locations on a traditional camera sensor.
+Thus, regular spatial resolution is directly traded to gain angular resolution.
 
-The work done by Gortler and Levoy (et al.) demonstrated it was possible to capture 4D light field information using a traditional camera sensor with some modifications. While there is active research in developing angle-sensitive pixels, modern light field cameras typically encode angular ray information by mapping ray angles to locations on a traditional 2D camera sensor. Thus, regular spatial resolution is directly traded to gain angular resolution.
+Such a camera was recently constructed by Ren Ng's and is described in his dissertation.
+Ng's prototype light field camera used a microlens array placed over a regular DSLR camera sensor to encode angular information \cite{ng2006digital}.
+Based on his research, Ng went on to found Lytro inc. and developed the consumer oriented Lytro light field camera, which is used in this thesis.
+The Lytro light field camera is based on the same principle of sacrificing spatial resolution for angular resolution - the Lytro has an 11 mega-pixel sensor chip, however a spatial and angular resolution of only 1080x1080 and 10x10 respectively \cite{lytro2014techspecs}.
+The trade-off between angular resolution and spatial resolution is unavoidable when using this technique, and the choice of which light field dimensions ot sample limits the practical functions that can be performed with the captured light field.
+Other ways of sampling the 4D light field include using an array of curved mirrors to reflect light \cite{nayar2004programmable}, using a printed pinhole mask to refract light \cite{veeraraghavan2007dappled}, using multiple traditional cameras separated spatially in a grid \cite{wilburn2005high}, or multiple photographs separated temporally \cite{levoy1996light}.
+Recently, Google announced an update for Android based smartphones that enables limited light field photography in a mobile device for the first time, by taking multiple photos separated spatially \cite{google2014lensblur}.
 
-For example the Lytro light field camera used in this paper has an 11 mega-pixel sensor chip, however a spatial and angular resolution of only 1080x1080 and 10x10 respectively. The trade-off between angular resolution and spatial resolution is unavoidable when using this technique, and the choice of angular and spatial resolutions limit the functions that can be performed with the captured light field.
-GIVE EXMPLES OF HOW NOT ALL LIGHT FIELDS ARE EQUAL.
-DISCUSS THE BENEFITS/DRAWBACKS OF THE LYTRO CAMERA CONFIGURATION.
-4D light field sampling has also been performed using multiple traditional cameras separated spatially in a grid, or separated temporally.
+In methods that trade spatial resolution for angular resolution, the images that can be formed by slicing the light field function are unavoidably of a much lower resolution than regular commercial cameras.
+To this end, recent research by Bishop et al. has demonstrated so-called \enquote*{Light Field Superresolution} \cite{bishop2009light}.
+This and other related techniques incorporate image priors such as scene lambertianty and texture statistics to boost the apparent resolution of the re-constructed image slices through a Bayesian statistical framework.
 
-GO INTO MORE DETAIL ABOUT LYTRO CAMRERA AND BRIEFLY COMPARE LYTRO WITH RAYTRIX AND OTHER LF CAMERAS (STANFORD MULTI CAMERA ARRAY).
-ALSO DISCUSS SYNTHETIC LIGHT FIELD CREATION AND GIVE EXMAPLES.
-HIGHLIGHT BENEFITS AND DRAWBACKS OF SYNTHETIC LIGHT FIELDS VS REAL TEST DATA.
-MENTION THE APPEARANCE OF LIGHT FIELD CAMERAS ON MOBILE PHONES.
-MENTION ANDROID LF CAMERA.
-
-Mapping of ray angles to the 2D camera plane is typically done by placing either a lenslet or mirror array, or a cosine pinhole mask within the light ray path. These approaches are functionally equivalent, however each has disadvantages and benefits. A lenslet or mirror array is di cult to machine and requires custom hardware and precision positioning. On the other hand, a pinhole array can be added to some modern cameras with little modification, however blocks a large majority of the incoming light, thus requiring longer exposure times and increasing the likelihood of motion blurring.
-
-2 OR 3 PARAGRAPHS ABOUT LOW RESOLUTION AND LIGHT FIELD SUPER RESOLUTION PAPER.
-
-POSSIBLY 2-3 MORE PARAGRAPHS ABOUT RECENT LIGHT FIELD RESEARCH AND DEVELOPMENTS.
-
-2 SUMMARISING PARAGRAPHS BRINGING ALL OF THIS INFORMATION BACK TO MY THESIS – HIGHLIGHTING WHAT PARTS I’M GOING TO BE USING, WHAT LF SYMBOLS AND CONVENTIONS I’LL BE USING ETC.
-
+For this thesis we used the Lytro camera to capture light field images, and investigate means for removing the presence of motion blur from these images.
 
 \section{Motion Blur Formation}
 \label{sec:motion_blur_formation}
@@ -74,19 +98,25 @@ POSSIBLY 2-3 MORE PARAGRAPHS ABOUT RECENT LIGHT FIELD RESEARCH AND DEVELOPMENTS.
 Motion blur occurs in any non-theoretical camera due to a finite exposure time, combined with the presence of camera, or object motion within the scene.
 This is distinct from focal blur, which is a by-product of the optical behavior of any camera aperture larger than an infinitesimal point (a perfect pinhole aperture).
 If the camera or objects within the scene move during the exposure time, light rays from the scene that would otherwise be focused on a single photosite are distributed across multiple photosites.
-The objects within the scene therefore become \enquote*{smeared} across several pixels in the resultant image \hl{(figure XXXX)}.
+The objects within the scene therefore become \enquote*{smeared} across several pixels in the resultant image (Figure \ref{fig:integration_blur}).
 
-\hl{[Figure XXXX here showing camera integration over time, and blur occurring]}
+\begin{figure}[h]
+\centering
+\includegraphics[width=8cm]{integration_blur.pdf}
+\caption[Motion Blur Caused by Camera Integration]{
+a) In this simplified, orthographic-projection camera, photosites integrate the scene intensity vertically ($I$) b) When the object moves at during the image exposure, the light from the object is distributed across multiple photosites, resulting in motion blur.
+}
+\label{fig:integration_blur}
+\end{figure}
 
 In a projective geometry imaging system --such as most cameras-- blur from camera or object linear motion in any plane perpendicular to the optical axis appears as a linear \enquote*{smear} in the image x or y directions.
 This \enquote*{smear} is known as a Point Spread Function (PSF), as it describes the spreading that occurs to a perfect point source within the scene.
 This is analogous to the impulse response of a frequency domain system; in this case the system is the optical apparatus, and the impulse is the point source in the scene.
 
-Movement along the optical axis (as compared to movement perpendicular to the optical axis) results in a radial point spread function, while camera or object rotation creates a radial point spread function centered at the origin of the rotation \hl{(figure XXXX)}.
+Movement along the optical axis (as compared to movement perpendicular to the optical axis) results in a radial 
+ function, while camera or object rotation creates a radial point spread function centered at the origin of the rotation.
 In all cases, the degree of blur varies with the distance from the camera to the object moving.
 In this thesis, for the sake of simplicity, we focus on de-blurring linear motion blur induced through camera motion.
-
-\hl{[Figure XXXX here, showing camera or object motion perpendicular to and along the optical axis]}
 
 In order to de-blur light field data, it was necessary to quantitatively describe the way motion blur forms in a camera.
 Specifically, it was necessary to derive an equation describing the way a motion blur Point Spread Function varied with respect to scene depth.
@@ -98,9 +128,6 @@ k \boldsymbol{x} = \boldsymbol{K} \left[~\boldsymbol{R}~|~\boldsymbol{t}~\right]
 \end{equation}
 
 where $k$ is the homogeneous scaling constant, $\boldsymbol{x}$ is the image-space point location, $\boldsymbol{K}$ is the so-called \enquote*{camera intrinsic matrix} that accounts for camera distortions, $\boldsymbol{R}$ is the 3x3 camera rotation matrix,  $\boldsymbol{t}$ is the camera's 3x1 world-frame translation vector and $\boldsymbol{X}$ is the world-frame point location.
-\hl{Figure XXXX} shows the geometry involved in equation \ref{eq:camera_projection_unexpanded}.
-
-\hl{[Figure XXXX]}
 
 Expanding the matrix and vector terms, equation \ref{eq:camera_projection} is reached.
 
@@ -166,7 +193,6 @@ This is shown visually in Figure \ref{fig:psf_3d}.
 
 
 \begin{figure}[h]
-
 \centering
 \includegraphics[width=\textwidth]{psf_3d.pdf}
 \caption[Visualisation of a 3D Point Spread Function]{Visualisation of a 3D Linear Motion Point Spread Function, with $x$, $y$ and $Z$ as the dimensions}
@@ -179,8 +205,8 @@ Figure \ref{fig:blur_vs_width} shows the measured results along with the predict
 
 \begin{figure}[h]
 \centering
-\caption[Edge blur width vs. Depth]{Edge blur width vs. Depth - Measured, Predicted and $L^{2}$ regression}
-\label{fig:blur_vs_width}
+\caption[Edge Blur Width vs. Depth]{Edge Blur Width vs. Depth - Measured and Predicted}
+\label{fig:blur_vs_depth}
 \includegraphics[width=\textwidth]{blur_vs_depth.pdf}
 \end{figure}
 
@@ -194,34 +220,85 @@ This possibility is discussed in Chapter \ref{chap:results_and_discussion} (\nam
 \section{Image De-blurring}
 \label{sec:image_deblurring}
 
-Image formation
+As discussed in section \ref{sec:motion_blur_formation}, motion blur is formed by camera or object movement during the camera exposure.
+This is equivalent to convolution of a true image $f$ with the blur kernel or \enquote*{Point Spread Function} $g$.
 
-Sources of degradation during image formation:
- - Optical blur (light diffraction through lens system), Rayleigh criterion
- - Noise (quantum statistical behaviour of light (shot noise) and read noise (electronics / detection device)).
- - Motion induced blur
+\begin{equation}
+\label{eq:spatial_blur_simple}
+i(x) = f(x)~\textasteriskcentered~g(x)
+\end{equation}
 
-Image formation in the fourier domain
- - g(x) = f(x) * h(x) -> G(w) = F(w) x H(w)
- - Additive noise
+Writing this in the frequency domain, we get
 
-Point Spread Function – Optical system response to a punctual light source
-Optical Transfer Function – Fourier transform of the PSF. Describes optical system behaviour in the fourier domain
+\begin{equation}
+\label{eq:frequency_blur_simple}
+I(f) = F(f) \times G(f)
+\end{equation}
 
-Simple deconvolution approaches
- - Inverse \& Regularized Inverse filter
- -- Noise amplification
- - Wiener Filter
- --Signal to Noise Ratio
+where $I$ is the observed image, $F$ is the original image and $G$ is the Fourier transform of the PSF, the so-called Optical Transfer Function (OTF).
+Note that in the frequency domain, the convolution operator (\textasteriskcentered) is a simple element-wise multiplication, and is subsequently computationally fast.
 
-Iterative Deconvolution
- - Least squares estimation (+regularized)
- - Maximum likelihood estimation (Richardson-Lucy)
+Supposing that the function $G$ can be found, it should theoretically be possible to recover the true image using
 
-Unsharp Masking
+\begin{equation}
+\label{eq:frequency_blur_inverse_simple}
+F(f) = \frac{I(f)}{G(f)}
+\end{equation}
 
-Blind deconvolution
+where element-wise division is used, and the inverse Fourier transform of $F$ is taken.
+Unfortunately, in practice this is not possible for two reasons; firstly, $G$ will contain zeros that cause the values of $F$ to go to infinity.
+Setting $F$ to zero in these regions will introduce artifacts.
+Secondly, in practice the imaging system is subject to noise, indicated by $n$.
+This can come in the form of Poisson shot noise, caused by the quantum nature of light, as well as device-specific detection noise.
 
+\begin{equation}
+\label{eq:frequency_blur_full}
+I(f) = F(f) \times G(f) + N(f)
+\end{equation}
+
+These two factors mean that recovering the true image $f$ is not possible in practice.
+Deconvolution de-blurring methods are an attempt to find a function $f'$ that estimates $f$ as accurately as possible, whilst being robust to the presence of additive noise.
+
+De-convolution methods can be divided into several categories.
+Linear deconvolution methods are most similar in operation to Equation \ref{eq:frequency_blur_inverse_simple}.
+The most naive deconvolution is a regularised form of Equation \ref{eq:frequency_blur_inverse_simple}, where values in $F$ that would otherwise be infinite (due to zeros in $G$) are set to 0;
+
+\begin{equation}
+\label{eq:regularised_deconvolution}
+F(f) = \begin{cases}
+	\frac{I(f)}{G(f)},	& \left| H(f) \right| \ge \epsilon> 0 \\
+	0					& \text{otherwise}
+\end{cases}
+\end{equation}
+
+This is sometimes known as \enquote*{stabilised} deconvolution.
+Note that regularised deconvolution does nothing to account for noise in the image, and will therefore \enquote*{amplify} the presence of noise in the recovered image $f'$.
+
+Wiener filtering improves on this and is a general signal processing technique that attempts to recover an estimate of a signal in the presence of additive noise \cite{wiener1964extrapolation}.
+Applied to image processing, Wiener deconvolution can be written as
+
+\begin{equation}
+\label{eq:wiener_filter}
+F(f) = I(f) \left( \frac{G(f)^* S(f)}{\left| G(f) \right|^2 S(f) + N(f) } \right)
+\end{equation}
+
+where $S$ and $N$ are the mean spectral power densities of observed image $i$ and the noise $N$ respectively and $*$ denotes complex conjugation.
+As can be seen, at frequencies with high noise, the Wiener filter suppresses the output, $F$ reducing the amplification of noise that regularised deconvolution suffers from.
+Winer deconvolution has the drawback that the spectral content of the image and noise must be known, or estimated.
+
+More complex convolution methods are framed in an iterative fashion - these methods iteratively solve the minimisation of some cost function.
+This cost function can be defined in a least-squares framework \cite{ng99anew} or as an expectation-maximisation problem, as is the case with the well known Richardson-Lucy deconvolution method \cite{richarson1972bayesian}.
+This method seeks to maximise the probability of observing the image $I$ if the true image is some image $J$.
+
+Finally, blind deconvolution methods are a collection of more recent techniques where no information about the PSF needs to be supplied \cite{bell1995information, ayers1988iterative}.
+In these methods, an estimate of the original image is made, then convoled with a theoretical PSF.
+This is compared with the observed image and corrections made to both the PSF and original image estimates.
+The process then repeats iteratively until some stopping criterion is met.
+These methods have the obvious advantage that they operate without prior information about the PSF.
+
+In this thesis we apply Richardson-Lucy deconvolution to a light field image, using the depth map to vary the PSF for different parts of the light field.
+Richardson-Lucy deconvolution was selected due to it's computational simplicity and robust performance in the presence of noise, however any deconvolution method could be used in it's place.
+We compare the results of our depth-aware deconvolution technique with those of Regularised, Blind and 2D Richardson-Lucy deconvolution to demonstrate the improvement that using a depth-aware PSF brings.
 
 \section{Light Field Depth Estimation}
 \label{sec:light_field_depth_estimation}
@@ -259,16 +336,16 @@ The reduction in quality due to glare is expected due to the lambertian scene as
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{depth_lack_of_structure.png}
-\caption[Lack of Scene Structure Corrupts Lytro Depth Estimation]{An example light field image and the Lytro depth response. Note the lack of clear structure in some parts of the image (e.g. on the stuffed toy's face and body, and in the background) results in large regions without depth variation, despite the presence of real-world depth change.}
-\label{fig:depth_lack_of_structure}
+\includegraphics[width=\textwidth]{blur_corrupts_depth.png}
+\caption[Motion Blur Corrupts Lytro Depth Estimation]{The same scene photographed three times with the Lytro camera, with progressively more motion blur. Note the reduction in the quality and consistency of the depth response.}
+\label{fig:blur_corrupts_depth}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{blur_corrupts_depth.png}
-\caption[Motion Blur Corrupts Lytro Depth Estimation]{The same scene photographed three times with the Lytro camera, with progressively more motion blur. Note the reduction in the quality and consistency of the depth response.}
-\label{fig:blur_corrupts_depth}
+\includegraphics[width=\textwidth]{depth_lack_of_structure.png}
+\caption[Lack of Scene Structure Corrupts Lytro Depth Estimation]{An example light field image and the Lytro depth response. Note the lack of clear structure in some parts of the image (e.g. on the stuffed toy's face and body, and in the background) results in large regions without depth variation, despite the presence of real-world depth change.}
+\label{fig:depth_lack_of_structure}
 \end{figure}
 
 These findings suggested that if rough knowledge of the scene depth can be obtained, it is possible to calibrate the Lytro depth maps into units of meters, allowing real-world depths to be estimated.
@@ -281,7 +358,7 @@ Using the supplied Matlab source code \cite{tao2013depthwebsite}, depth maps wer
 It is possible this was due to their code being tuned specifically for their Lytro camera, however due to discovering the more readily available Lytro depth data, this possibility was not explored further.
 
 
-\begin{figure}[h]
+\begin{figure}
 \centering
 \includegraphics[width=7cm]{defocus_correspondence_depth.png}
 \caption[Depth Map from combining Defocus and Correspondence]{An example depth map result from using Defocus and Correspondence by Tao et al. \cite{tao2013depthwebsite} - the input light field is the same as in Figure \ref{fig:depth_lack_of_structure}.}

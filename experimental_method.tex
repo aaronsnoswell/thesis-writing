@@ -15,14 +15,10 @@ The angular velocity of the drum was manually calibrated using a stopwatch and r
 Figure \ref{fig:motion_platform} shows the design of the linear motion platform.
 
 \begin{figure}[h]
-
 \centering
-
 \includegraphics[width=\textwidth]{motion_platform}
-
 \caption[Linear motion platform design]{Linear motion platform design}
 \label{fig:motion_platform}
-
 \end{figure}
 
 
@@ -38,14 +34,10 @@ A large pin-board was placed behind the scene to provide a constant background d
 Figure \ref{fig:scene_description} shows the experimental scene configuration.
 
 \begin{figure}[h]
-
 \centering
-
 \includegraphics[width=\textwidth]{scene_contents}
-
 \caption[Experimental scene layout]{Experimental scene layout, shown from above}
 \label{fig:scene_description}
-
 \end{figure}
 
 
@@ -56,20 +48,16 @@ A Lytro camera with firmware version 1.2.2 was used for the light field photogra
 The Lytro camera was configured using the following settings.
 
 \begin{table}[h]
-
 \centering
 \caption{Lytro Camera Settings}
 \label{tab:lytro_settings}
-
 \begin{tabular}{r | l}
-
 Zoom & 1.0 \\
 Creative Mode & Off \\
 ND Filter & Off \\
 ISO Sensitivity & Auto \\
 Shutter Speed & As Required \\
 Shutter Delay & 10s \\
-
 \end{tabular}
 \end{table}
 
@@ -79,69 +67,63 @@ In several cases multiple attempts were required to get the entire scene within 
 
 The captured images were transfered to an computer using the standard Lytro Desktop companion software, version 3.1.1 for Mac.
 A late 2011 model Apple Mac Book Air running OSX 10.9.3 was used for image processing and version 0.2 of the Light Field Toolbox \cite{dansereau2013toolbox} was used for light field manipulation and processing in Matlab.
-The image decoding, calibration and rectification process used by the LF toolbox is described in \cite{dansereau2013decoding}.
+The image decoding process used by the LF toolbox is described in \cite{dansereau2013decoding}.
 
 Lytro .lfp files were converted to raw image files and metadata files using the python-lfp-reader Python scripts (version 0.2) \cite{esfahbod2013python}, as per the Matlab LF Toolbox instructions.
 
+The original purpose of the DSLR camera was to capture ground-truth sharp images for comparison with the light field images.
+Unfortunately due to the shallow depth range used in the experiment the DSLR images were unable to focus on all objects in the scene.
+The DSLR was left in-place for all images to ensure the motion platform velocity calculations were correct, however the actual DSLR images were not used at all.
 
 \section{Image Processing and Deconvolution}
 \label{sec:image_processing_and_deconvolution}
 
-The raw image files were read using the Matlab LF Toolbox.
-The a-priori depth maps were read as images and the depth at several points in the depth map specified interactively using a graphical interface.
+The raw image files were read using the Matlab LF Toolbox and the Lytro depth maps were extracted from the Lytro desktop software image database.
 
-\hl{NEED TO TALK HERE ABOUT THE FACT THAT A-PRIORI CAMERA MOTION VELOCITY INFORMATION WAS USED, HOWEVER IN A REAL ENVIRONMENT OTHER SOURCES COULD BE USED TO GET THIS INFORMATION, E.G. THE BUILT-IN LYTRO ACCELEROMETER, OR A GPS OR OTHER SENSOR.}
+Camera velocity was measured using the Lego Mindstorms motor encoders on the motion platform after initial calibration of the platform with a stopwatch and ruler.
 
-A least-squares regression was then performed to find a function mapping depth map intensity to real world depth.
-To reduce processing time, the depth map was then posterized into a user-specified number of 'depth planes', each with a corresponding pixel mask.
-The posterization was performed by applying 1-dimensional k-means clustering to the depth map histogram, using random seed locations.
-A user-specified tolerance was used to terminate the k-means operation.
-\hl{Figure XXXX} shows the k-means clustering process.
+The exposure time and focal length were read from the Lytro image metadata, and a scaling factor for the Lytro focal length determined experimentally.
 
-\hl{[Figure XXXX goes here]}
-
-To de-blur the light field, all possible sup-aperture slices were taken and individually de-convoled once at every scene depth using the Richardson Lucy method, as implemented in the Matlab command 'deconvlucy'.
+To de-blur the light field, all possible sup-aperture slices were taken and individually de-convoled once at every scene depth using the Richardson-Lucy method, as implemented in the Matlab command 'deconvlucy'.
 The de-convoled sub-aperture images were then combined, using the depth plane pixel masks.
-This process is described in pseudocode in \hl{Listing XXXX}.
-
-\hl{[Listing XXXX goes here (pseudocode describing de-blurring)]}
-
-
-%LF_deblurred = new_empty_lf();
-%
-%for i = 1 to number_of_z_planes
-%    blur_length = depth_map_to_blur_length(z_plane[i])
-%    psf = make_motion_psf(blur_length);
-%    
-%    LF_deblurred_i = new_empty_lf();
-%    
-%    for j = 1 to microlens_width
-%        for k = 1 to microlens_height
-%            subap_image = LF_blurred(j, k, :, :, :)
-%            deblurred = deblur_image(subap_image, psf)
-%            LF_deblurred_i(j, k, :, :, :) = deblurred
-%        end
-%    end
-%    
-%    where z_plane[i] exists:
-%        copy LF_deblurred_i pixels to LF_deblurred
-%end
+This Matlab code for this process is fully described in appendix XXXX.
 
 
 \section{Quantitative Analysis}
 \label{sec:quantitative_analysis}
 
 Two quantitative measures were used to compare de-blurred light fields.
-A 'Q-Factor' was computed to measure the reduction in image blur and the Root-Mean-Square Error (RMSE) was estimated to measure the degree of noise amplification introduced by the de-convolution.
+A \enquote*{Q-Factor} was computed to measure the increase in image sharpness and the Root-Mean-Square Error (RMSE) was estimated to measure the degree of noise amplification introduced by the de-convolution.
 
-The Q-Factor was computed by taking the central sub-aperture image from the light field and using ImageJ to manually measure the blur width in pixels of prominent straight edges within the scene.
-The same edges were measured in the blurred and de-blurred images, and '\% Q increase' calculated using
+The Q-Factor was computed by summing absolute pixel intensities after applying a vertical Prewitt edge detection filter.
+These sums were then normalised relative to the original blurred image Q-factor.
+This had the effect of measuring the increase in the intensity of high-frequency components in the image.
+Thus, the Q-factor we used was
 
 \begin{equation}
-Q = \frac{1}{N} \sum_{i}^{N}(1 - \frac{w_{ai}}{w_{bi}}) * 100
+Q = \frac{\sum_{x=1}^{W} \sum_{y=1}^{H}
+\left| (I \ast H)(x, y) \right|
+\label{eq:q_factor}}{Q_b}
 \end{equation}
 
-where $i$ refers to each edge measurement, and $w_{ai}$ and $w_{bi}$ are the edge widths in pixels after and before de-blurring respectively.
+where $Q_b$ is the Q-Factor for the original image, $W$ and $H$ are the width and height of the image, $I$ is the de-blurred image, and is the Prewitt vertical edge detection kernel.
+
+\begin{equation}
+H = 
+\begin{bmatrix}
+1 & 0 & -1 \\
+1 & 0 & -1 \\
+1 & 0 & -1 \\
+\end{bmatrix}
+\label{eq:prewitt_filter}
+\end{equation}
+
+(the vertical detection kernel was used due to the presence of horizontal motion blur in the tests performed in this thesis).
+
+This Q-factor definition had the downside of also measuring noise content.
+Thus, extremely noisy images could potentially score higher than clean, sharp images.
+Without a ground truth image, a simple and well defined measure of \enquote*{image sharpness} is not easy to formulate  - as evidenced by the complexity of image sharpness standards \cite{imatest2014sharpness}.
+Despite this, our Q factor definition served to demonstrate the quantifiable recovery of high-frequency image content after de-blurring.
 
 The RMSE was estimated by converting the central sub-aperture image to grayscale, then selecting a small (approximately 50x50 pixel) region known to be of constant color.
 The RMSE was then computed using

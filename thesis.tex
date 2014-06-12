@@ -24,6 +24,14 @@
 \usepackage{nameref}
 % Used for highlighting TODO sections
 \usepackage{soul}
+% Used for nice captions
+\usepackage{caption} 
+% Used to force figures to be in their respective sections
+\usepackage[section]{placeins}
+
+
+\captionsetup[table]{skip=2pt}
+\captionsetup[figure]{skip=2pt}
 
 % Set image path
 \graphicspath{{./images/}}
@@ -54,10 +62,10 @@
 \begin{document}
 
 % Title page
-\input{./title.tex}
+\input{./title}
 
 % Other pages
-\input{./abstract.tex}
+\input{./abstract}
 
 \tableofcontents
 \newpage
@@ -68,11 +76,11 @@
 \listoftables
 \newpage
 
-\input{./introduction.tex}
-\input{./plenoptic_deblurring.tex}
-\input{./experimental_method.tex}
-\input{./results_and_discussion.tex}
-\input{./conclusion.tex}
+\input{./introduction}
+\input{./plenoptic_deblurring}
+\input{./experimental_method}
+\input{./results_and_discussion}
+\input{./conclusion}
 
 \bibliographystyle{plain}
 \bibliography{bibliography/thesis_bibliography}
