@@ -50,7 +50,6 @@ Richardson-Lucy & 9.19  & 4.99 & 4.15 \\
 Selected light field images of the three scenes are shown in Figures \ref{fig:results_milo_long_b} to \ref{fig:results_bears_short}, along with the respective depth maps, our results, and results from 2D deconvolution.
 
 
-
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{results_milo_long_b.pdf}
@@ -119,10 +118,30 @@ Looking closely at the background bear's face reveals sharper features in our re
 \section{Implications}
 \label{sec:implications}
 
-The results of this thesis show that linearly motion-blurred light field images from a Lytro camera can be de-blurred at all scene depths.
-In order to do this, a rough estimate of the scene depth range is needed to calibrate the Lytro depth data, and the camera velocity, exposure time and focal length need to be known.
+By analysing the projective geometry camera equation (Equation \ref{eq:camera_projection}), we have shown that real-world depth measurements can be combined with knowledge of a camera trajectory and camera intrinsics to compute 3D point-spread functions.
+We suggest that a 3D PSF is better than a 2D PSF as it allows for depth-aware deconvolution.
+This type of deconvolution allows an optimal PSF to be used for all parts of an image, reducing ringing artifacts and increasing the quality of the de-blurred image.
+For a practical demonstration of depth-aware deconvolution, we investigated the possibility of de-blurring light field images from a commercial Lytro camera.
 
-Future practical applications of this include improving consumer satisfaction with hand-held light field devices as well as improving the performance of robotic computer vision systems where motion blur is problematic.
+Our initial experimental work suggested that Lytro depth maps are consistent for light field images with similar overall depth range.
+This implies that if a rough estimate of the scene depth can be made, Lytro depth maps can be calibrated using a piecewise linear mapping.
+We suggest that user-supplied scene information (e.g. from the \enquote*{scene} setting on a commercial camera), a cheap depth sensor such as an IR or ultrasound based focal-range sensor or \emph{a-priori} knowledge of a robotic operating environment can be used to this end.
+
+The experimental results of our de-blurring tests show that linearly motion-blurred light field images from a Lytro camera can be de-blurred at all scene depths.
+In order to do this, a rough estimate of the scene depth range is needed to calibrate the Lytro depth data, and the camera velocity, exposure time and focal length need to be known.
+This technique however is not limited to Lytro images - our depth-aware deconvolution method could also be applied to images from any RGBD sensor that can provide calibrated depth maps - e.g. the Microsoft Kinect sensor. 
+Using the Lytro camera is beneficial in this regard as de-blurred light field data can be obtained, opening more possibilities for computational photography.
+
+Future practical applications of depth aware deconvolution include improving consumer satisfaction with hand-held light field and RGBD camera devices by de-blurring camera shake.
+This will be more widely applicable in the near future, given that consumer smartphones are beginning to be equipped with depth-sensing capabilities \cite{google2014lensblur, google2014tango}.
+
+Depth-aware deconvolution also has potential benefits for forensic and photo-restoration applications, even where depth information is not readily available.
+For example the specification of a depth map could potentially be performed through interactive user input with one or more images \cite{sinha2008interactive}.
+By exploiting user supplied \emph{a-priori} information about the content of a photo in this way, it may be possible to perform depth-aware deconvolution even on photos where a depth map is not available. 
+
+Finally, we anticipate that depth-aware deconvolution will have benefits in robotic navigation and computer vision applications.
+Robotic systems have many attributes that make them suitable for depth-aware deconvolution; often camera intrinsics are known, and the exposure time of images can be obtained, camera trajectory will likely be known thanks to motion encoders or other robotic sensors, and increasingly, more robotic systems are incorporating highly capable depth sensors.
+Light field sensors such as the Lytro have the potential to be powerful tools for robotic systems, and by demonstrating the ability to de-blur a light field image, it is hoped that the performance of robotic light field computer vision systems can be improved, e.g. in low-light operating environments where motion blur is more likely.
 
 
 \section{Limitations and Future Work}
