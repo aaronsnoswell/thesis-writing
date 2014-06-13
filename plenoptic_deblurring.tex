@@ -5,16 +5,6 @@
 \section{Light Field Theory}
 \label{sec:light_field_theory}
 
-%Side Note
-%The first practical work using light fields dates back to a photographic technique known as ‘Integral Photography’, developed by Gabriel Lipmann in 1908.
-%Lipmann’s technique involved placing an array of lenses over a piece of film.
-%The film was then exposed to a scene, encoding 3D information through the lens pattern. 
-%By reversing this process (projecting light through the film, then through an identical lens array), the first 3D pictures were created.
-%Modern techniques allow Lipmann’s lens arrays to be printed on a surface, creating what is commonly known as ‘holographic pictures’ that morph and change as the viewer’s perspective changes.
-%GIVE MORE INFORMATION ON INTEGRAL PHOTOGRAPHY.
-%The ability to create a 3D display in this manner (without extra viewing devices such as 3D glasses) is known as auto-stereoscopic imaging.
-
-
 The light field is a mathematical description of the way light propagates.
 Another name for this is the \enquote*{Plenoptic Function}, from the Latin \enquote*{plenus}, meaning full, and \enquote*{optic}, meaning light.
 The plenoptic function describes every possible configuration a light ray could ever be in, encompassing the three spatial dimensions, two angular dimensions, temporal changes as well as frequency (colour), phase and polarisation changes.
@@ -80,8 +70,9 @@ Thus, regular spatial resolution is directly traded to gain angular resolution.
 
 Such a camera was recently constructed by Ren Ng's and is described in his dissertation.
 Ng's prototype light field camera used a microlens array placed over a regular DSLR camera sensor to encode angular information \cite{ng2006digital}.
-Based on his research, Ng went on to found Lytro inc. and developed the consumer oriented Lytro light field camera, which is used in this thesis.
-The Lytro light field camera is based on the same principle of sacrificing spatial resolution for angular resolution - the Lytro has an 11 mega-pixel sensor chip, however a spatial and angular resolution of only 1080x1080 and 10x10 respectively \cite{lytro2014techspecs}.
+Based on his research, Ng went on to found Lytro inc. and developed the consumer oriented Lytro light field camera, which is used in this experiment.
+The Lytro light field camera is based on the same principle of sacrificing spatial resolution for angular resolution.
+The Lytro has an 11 mega-pixel sensor chip, however a spatial and angular resolution of only 1080x1080 and 10x10 respectively \cite{lytro2014techspecs}.
 The trade-off between angular resolution and spatial resolution is unavoidable when using this technique, and the choice of which light field dimensions ot sample limits the practical functions that can be performed with the captured light field.
 Other ways of sampling the 4D light field include using an array of curved mirrors to reflect light \cite{nayar2004programmable}, using a printed pinhole mask to refract light \cite{veeraraghavan2007dappled}, using multiple traditional cameras separated spatially in a grid \cite{wilburn2005high}, or multiple photographs separated temporally \cite{levoy1996light}.
 Recently, Google announced an update for Android based smartphones that enables limited light field photography in a mobile device for the first time, by taking multiple photos separated spatially \cite{google2014lensblur}.
@@ -89,8 +80,12 @@ Recently, Google announced an update for Android based smartphones that enables 
 In methods that trade spatial resolution for angular resolution, the images that can be formed by slicing the light field function are unavoidably of a much lower resolution than regular commercial cameras.
 To this end, recent research by Bishop et al. has demonstrated so-called \enquote*{Light Field Superresolution} \cite{bishop2009light}.
 This and other related techniques incorporate image priors such as scene lambertianty and texture statistics to boost the apparent resolution of the re-constructed image slices through a Bayesian statistical framework.
+It is assumed that the Lytro camera uses a variant of this technique to boost the apparent resolution of the Lytro light field images.
 
-For this thesis we used the Lytro camera to capture light field images, and investigate means for removing the presence of motion blur from these images.
+For this experiment we used the Lytro camera to capture light field images.
+By studying the way motion blur forms in a camera (Section \ref{sec:motion_blur_formation}), we develop a means for de-blurring images (light field or otherwise) to a better degree than current methods allow.
+This technique relies on the availability of a calibrated depth map, and the Lytro camera is used to supply this depth data.
+By demonstrating a means for de-blurring light field images it is hoped that light field sensors will see increased usefulness as tools for robotic navigation and computer vision applications.
 
 \section{Motion Blur Formation}
 \label{sec:motion_blur_formation}
@@ -109,14 +104,14 @@ a) In this simplified, orthographic-projection camera, photosites integrate the 
 \label{fig:integration_blur}
 \end{figure}
 
-In a projective geometry imaging system --such as most cameras-- blur from camera or object linear motion in any plane perpendicular to the optical axis appears as a linear \enquote*{smear} in the image x or y directions.
+In a projective geometry imaging system, such as most cameras, blur from camera or object linear motion in any plane perpendicular to the optical axis appears as a linear \enquote*{smear} in the image x or y directions.
 This \enquote*{smear} is known as a Point Spread Function (PSF), as it describes the spreading that occurs to a perfect point source within the scene.
 This is analogous to the impulse response of a frequency domain system; in this case the system is the optical apparatus, and the impulse is the point source in the scene.
 
 Movement along the optical axis (as compared to movement perpendicular to the optical axis) results in a radial 
  function, while camera or object rotation creates a radial point spread function centered at the origin of the rotation.
 In all cases, the degree of blur varies with the distance from the camera to the object moving.
-In this thesis, for the sake of simplicity, we focus on de-blurring linear motion blur induced through camera motion.
+For the sake of simplicity, in the experiments performed here we focus only on de-blurring linear motion blur induced through camera motion.
 
 In order to de-blur light field data, it was necessary to quantitatively describe the way motion blur forms in a camera.
 Specifically, it was necessary to derive an equation describing the way a motion blur Point Spread Function varied with respect to scene depth.
@@ -210,9 +205,9 @@ Figure \ref{fig:blur_vs_width} shows the measured results along with the predict
 \includegraphics[width=\textwidth]{blur_vs_depth.pdf}
 \end{figure}
 
-As can be seen, the equation matched the theoretical curve very closely, indicating that equation \ref{eq:blur_width_simple} is a good fit for an individual sub-aperture image within a light field.
-This indicates that if the focal length, linear camera velocity and exposure time are known, and if a calibrated depth map can be recovered from the light field, it should be possible to de-blur all sub-aperture images from the light field image at all scene depths.
-This is the basis for the light field de-blurring technique developed in this thesis.
+As can be seen, the equation matched the theoretical curve very closely, indicating that equation \ref{eq:blur_width_simple} is a good fit for an individual sub-aperture image within a Lytro light field.
+This shows that if the focal length, linear camera velocity and exposure time are known, and if a calibrated depth map can be recovered from the light field, it should be possible to de-blur all sub-aperture images from the light field image at all scene depths.
+This is the basis for the light field de-blurring technique developed here.
 As a final note, observe that the above analysis could also be applied to compute the 3D point spread function for a general camera trajectory, provided the trajectory (camera $\boldsymbol{R}$ and $\boldsymbol{t}$ at all times during the exposure) was known.
 This possibility is discussed in Chapter \ref{chap:results_and_discussion} (\nameref{chap:results_and_discussion}).
 
@@ -286,7 +281,8 @@ where $S$ and $N$ are the mean spectral power densities of observed image $i$ an
 As can be seen, at frequencies with high noise, the Wiener filter suppresses the output, $F$ reducing the amplification of noise that regularised deconvolution suffers from.
 Winer deconvolution has the drawback that the spectral content of the image and noise must be known, or estimated.
 
-More complex convolution methods are framed in an iterative fashion - these methods iteratively solve the minimisation of some cost function.
+More complex convolution methods are framed in an iterative fashion.
+These methods iteratively solve the minimisation of some cost function.
 This cost function can be defined in a least-squares framework \cite{ng99anew} or as an expectation-maximisation problem, as is the case with the well known Richardson-Lucy deconvolution method \cite{richarson1972bayesian}.
 This method seeks to maximise the probability of observing the image $I$ if the true image is some image $J$.
 
@@ -296,7 +292,7 @@ This is compared with the observed image and corrections made to both the PSF an
 The process then repeats iteratively until some stopping criterion is met.
 These methods have the obvious advantage that they operate without prior information about the PSF.
 
-In this thesis we apply Richardson-Lucy deconvolution to a light field image, using the depth map to vary the PSF for different parts of the light field.
+In the experiments here we apply Richardson-Lucy deconvolution to a light field image, using the depth map to vary the PSF for different parts of the scene.
 Richardson-Lucy deconvolution was selected due to it's computational simplicity and robust performance in the presence of noise, however any deconvolution method could be used in it's place.
 We compare the results of our depth-aware deconvolution technique with those of Regularised, Blind and 2D Richardson-Lucy deconvolution to demonstrate the improvement that using a depth-aware PSF brings.
 
@@ -309,7 +305,7 @@ This depth map can be located within the Lytro image storage database and is con
 The \enquote*{lfpsplitter} tool \cite{patel2013lfptools} was used to extract this data into a single-column text file format, after which Matlab was used to reshape this data into a depth map.
 To correctly re-shape the data, it had to be read in standard raster order (left to right, top to bottom), with an expected size of 330x330.
 
-Further research and analysis is needed to more fully quantify the Lytro depth response function, however for the purposes of this thesis an initial investigation was performed.
+Further research and analysis is needed to more fully quantify the Lytro depth response function, however an initial investigation was performed using several Lytro images.
 Sample points from within the Lytro depth maps were compared with real-world depth estimates for a range of real-world scenes, with the scene depth ranging up to 8 meters.
 Our initial analysis showed that after the rejection of outliers, the Lytro depth response \enquote*{$D$} was a linear function with real-world object depth \enquote*{$Z$}, however the specific linear function varied as the overall scene depth range changed.
 For example, scenes with an overall depth range less than 0.5m were found to be a good fit ($R^2 = 0.69$) with the linear function $Z(D) = 0.0291 \times D + 0.2114$, while scenes with a depth range of 0.5-2m were a moderately good fit ($R^2 = 0.53$) with the function $Z(D) = 0.1436 \times D + 0.8597$.
@@ -361,6 +357,9 @@ It is possible this was due to their code being tuned specifically for their Lyt
 \begin{figure}
 \centering
 \includegraphics[width=7cm]{defocus_correspondence_depth.png}
-\caption[Depth Map from combining Defocus and Correspondence]{An example depth map result from using Defocus and Correspondence by Tao et al. \cite{tao2013depthwebsite} - the input light field is the same as in Figure \ref{fig:depth_lack_of_structure}.}
+\caption[Depth Map from combining Defocus and Correspondence]{
+An example depth map result from using Defocus and Correspondence by Tao et al. \cite{tao2013depthwebsite}.
+The input light field is the same as in Figure \ref{fig:depth_lack_of_structure}.
+}
 \label{fig:defocus_correspondence_depth}
 \end{figure}

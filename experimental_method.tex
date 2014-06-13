@@ -86,7 +86,7 @@ The exposure time and focal length were read from the Lytro image metadata, and 
 
 To de-blur the light field, all possible sup-aperture slices were taken and individually de-convoled once at every scene depth using the Richardson-Lucy method, as implemented in the Matlab command 'deconvlucy'.
 The de-convoled sub-aperture images were then combined, using the depth plane pixel masks.
-This Matlab code for this process is fully described in appendix XXXX.
+This Matlab code for this process is fully described in Appendix XXXX.
 
 
 \section{Quantitative Analysis}
@@ -118,11 +118,11 @@ H =
 \label{eq:prewitt_filter}
 \end{equation}
 
-(the vertical detection kernel was used due to the presence of horizontal motion blur in the tests performed in this thesis).
+(the vertical detection kernel was used due to the presence of horizontal motion blur in the tests performed here).
 
 This Q-factor definition had the downside of also measuring noise content.
-Thus, extremely noisy images could potentially score higher than clean, sharp images.
-Without a ground truth image, a simple and well defined measure of \enquote*{image sharpness} is not easy to formulate  - as evidenced by the complexity of image sharpness standards \cite{imatest2014sharpness}.
+Thus, noisy images could potentially score higher than clean, sharp images.
+Without a ground truth image, a simple and well defined measure of \enquote*{image sharpness} is not easy to formulate, as evidenced by the complexity of image sharpness standards \cite{imatest2014sharpness}.
 Despite this, our Q factor definition served to demonstrate the quantifiable recovery of high-frequency image content after de-blurring.
 
 The RMSE was estimated by converting the central sub-aperture image to grayscale, then selecting a small (approximately 50x50 pixel) region known to be of constant color.
@@ -133,4 +133,5 @@ R = \sqrt{ \sum_{x=1}^{W} \sum_{y=1}^{H} (I(x,y) - m)^2 }
 \end{equation}
 
 Where $W$ and $H$ are the width and height of the region respectively, $I$ is the region image and $m$ is the gray level within the region.
+This metric gives an estimate of the additive noise content in the image prior to de-blurring, and an estimate of the noise (ringing and additive) in the image after de-blurring.
 

@@ -109,7 +109,8 @@ Thus, for the \enquote*{Bears} scene, the PSF used for the 2D deconvolution meth
 Figure \ref{fig:results_milo_long_b} most clearly shows the benefit of our method over 2D deconvolution methods; for example the text on the ground is de-blurred continuously though all scene depths, a feat which is impossible for 2D deconvolution methods to do.
 
 In Figure \ref{fig:results_house_short} the benefit of our method is less pronounced, however ringing in the background of the scene is more pronounced in the 2D deconvolution cases.
-This reflects the fact that a single PSF was used to de-blur a scene with varying degrees of motion blur - in this case, the PSF used was sub-optimal for the degree of motion blur present in the background, and thus introduced excess ringing.
+This reflects the fact that a single PSF was used to de-blur a scene with varying degrees of motion blur.
+In this case, the PSF used was sub-optimal for the degree of motion blur present in the background, and thus introduced excess ringing.
 
 Figure \ref{fig:results_bears_short} again shows little difference between our method and the 2D deconvolution methods.
 In this case, as explained above, this is due to the presence of only two major depth planes in the scene and the poor quality depth map.
@@ -119,6 +120,7 @@ Looking closely at the background bear's face reveals sharper features in our re
 \label{sec:implications}
 
 By analysing the projective geometry camera equation (Equation \ref{eq:camera_projection}), we have shown that real-world depth measurements can be combined with knowledge of a camera trajectory and camera intrinsics to compute 3D point-spread functions.
+This was verified experimentally, as shown in Figure \ref{fig:blur_vs_depth}.
 We suggest that a 3D PSF is better than a 2D PSF as it allows for depth-aware deconvolution.
 This type of deconvolution allows an optimal PSF to be used for all parts of an image, reducing ringing artifacts and increasing the quality of the de-blurred image.
 For a practical demonstration of depth-aware deconvolution, we investigated the possibility of de-blurring light field images from a commercial Lytro camera.
@@ -129,7 +131,8 @@ We suggest that user-supplied scene information (e.g. from the \enquote*{scene} 
 
 The experimental results of our de-blurring tests show that linearly motion-blurred light field images from a Lytro camera can be de-blurred at all scene depths.
 In order to do this, a rough estimate of the scene depth range is needed to calibrate the Lytro depth data, and the camera velocity, exposure time and focal length need to be known.
-This technique however is not limited to Lytro images - our depth-aware deconvolution method could also be applied to images from any RGBD sensor that can provide calibrated depth maps - e.g. the Microsoft Kinect sensor. 
+This technique however is not limited to Lytro images.
+Our depth-aware deconvolution method could also be applied to images from any RGBD sensor that can provide calibrated depth maps, e.g. the Microsoft Kinect sensor. 
 Using the Lytro camera is beneficial in this regard as de-blurred light field data can be obtained, opening more possibilities for computational photography.
 
 Future practical applications of depth aware deconvolution include improving consumer satisfaction with hand-held light field and RGBD camera devices by de-blurring camera shake.
@@ -153,22 +156,22 @@ Our de-blurring method was demonstrated with linear motion blur only.
 Equation \ref{eq:camera_projection} can equally be applied to compute a 3D PSF for optical-axis rotational camera motion, or even generalized camera trajectories.
 Future work could explore if these PSFs can be used in the same way for de-blurring.
 
-In this thesis the camera velocity used to compute the PSF was supplied \emph{a-priori}.
+In the experiments performed the camera velocity used to compute the PSF was supplied \emph{a-priori}.
 In a robotic system this information could potentially come from encoders, an inertial measurement unit or other velocity sensors.
 Additionally, using calibrated depth data, future work could explore the possibility of using blind deconvolution methods to simultaneously recover the real-world camera velocity \emph{and} high-frequency image details.
 
-The images used for this thesis were all captured in a controlled environment.
+The images used for in these experiments were all captured in a controlled environment.
 Real-world implementations of this de-blurring method would need to be tested for robustness against lighting and other scene variations.
 
 Light field pixel confidence maps are available in the Light Field Toolbox, and the Lytro desktop software supplies depth confidence maps along with the depth data.
-Neither of these sources of information were utilised in this thesis.
+Neither of these sources of information were utilised in the experiments performed here.
 Future work could look at integrating this data into the de-blurring process, perhaps as a means for suppressing noisy regions of the light field, or regions where there is little confidence in the light field depth map.
 
 Although many light field images were captured and analysed in the process of developing the light field de-blurring technique, only three scenes were used for the final analysis.
-Future work could look at confirming the results found in this thesis by collecting more data.
+Future work could look at confirming the results found in this experiment by collecting more data.
 
-The Lytro camera was the only light field camera used in this thesis.
-The Lytro generates a light field with a specific dimensionality - for example Lytro light field images have a much larger spatial resolution than angular.
+The Lytro camera was the only light field camera used in this experiment.
+The Lytro generates a light field with a specific dimensionality; for example Lytro light field images have a much larger spatial resolution than angular.
 Future work could explore the use of other light field cameras, or more generally, light fields with other shapes (e.g. more angular resolution).
 
 At this point, the light field de-blurring is necessarily an off-line process, as the Lytro desktop companion software must be used to download light field images before they can be processed.
@@ -177,13 +180,13 @@ Future work could look into reverse-engineering the Lytro camera USB or Wifi dow
 Additionally, the de-blurring implementation shown here is computationally intensive, and no effort has been made to optimise the process.
 Before this work could be implemented in any real world system, robotic or otherwise, the de-blurring process would need to be optimised to run much more efficiently.
 
-For simplicity this thesis focused only on global motion blur caused by camera motion.
+For simplicity these experiments focused only on global motion blur caused by camera motion.
 Future work could look into individual object blur, and applications for selectively de-blurring isolated objects in a scene.
 
 As shown in section \ref{sec:light_field_depth_estimation}, the presence of motion blur reduces the quality of the light field depth estimation, which is required for de-blurring.
 This fact suggests several possibilities for future work; techniques for more robust, blur-invariant light field depth estimation are needed.
 Alternately, the method presented here could potentially be adapted to an iterative form, where an initial de-blurring pass allows better depth estimation, followed by another de-blurring pass etc.
 
-Finally, this thesis did not fully quantify the Lytro depth map response function.
+Finally, insufficient data was collected to fully quantify the Lytro depth map response function.
 Further research with ground truth depth data is needed to better understand the limitations and behavior of the Lytro depth maps, especially in uncontrolled real-world scenes.
 
