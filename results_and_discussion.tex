@@ -116,6 +116,12 @@ Figure \ref{fig:results_bears_short} again shows little difference between our m
 In this case, as explained above, this is due to the presence of only two major depth planes in the scene and the poor quality depth map.
 Looking closely at the background bear's face reveals sharper features in our result than in the other cases.
 
+Finally, note that the original purpose of the DSLR camera was to capture ground-truth sharp images for comparison with the light field images.
+This would have allowed more accurate RMSE and Q-factor metrics to be computed.
+Unfortunately due to the shallow depth range used in the experiment the DSLR was unable to bring all objects within the scene into focus.
+For this reason, the DSLR images were not used in the final comparisons.
+The DSLR was left in-place for all images to ensure the motion platform velocity calculations were correct, however the actual DSLR images were not used at all.
+
 \section{Implications}
 \label{sec:implications}
 
