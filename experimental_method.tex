@@ -7,8 +7,10 @@
 \label{sec:development_of_linear_motion_platform}
 
 A robotic linear motion platform was developed using Lego\textsuperscript{\textregistered} Mindstorms\textsuperscript{\textregistered} parts.
-The platform was designed to carry a Lytro camera and a Nikon D5100 DSLR camera side-by-side as close as possible, with support for both cameras made out of Lego parts.
-The motion platform consisted of a wheeled based that carried the cameras attached by a sewing thread to a drum, driven by two Mindstorms motors.
+The platform was designed to carry a Lytro camera and a Nikon D5100 DSLR camera side-by-side.
+Support for both cameras was made out of Lego parts.
+The motion platform consisted of a wheeled based that carried the cameras.
+It was attached by thread to a drum, driven by two Mindstorms motors.
 The drum was manually held in place during operation, and the Matlab RWHT NXT Toolbox \cite{rwth2007toolbox} was used to interface with the motors.
 
 The angular velocity of the drum was empirically calibrated allowing a desired velocity and linear distance to set in software.
@@ -26,8 +28,8 @@ Figure \ref{fig:motion_platform} shows the design of the linear motion platform.
 \label{sec:scene_design}
 
 The photographic scenes were set up in a room with no external facing windows to ensure the scene brightness could be controlled.
-Three 60 watt incandescent ceiling light bulbs were used for ambient lighting and a single 72 watt diffuse incandescent lamp was used to provide extra light.
-The lamp was arranged facing front-on to the scene to reduce visible shadow size and was placed behind the linear motion platform carrying the cameras.
+Three 60 watt incandescent static ceiling lights were used for ambient lighting in conjunction with a single 72 watt diffuse incandescent light source placed behind the linear motion platform carrying the cameras..
+The 72 watt light source was placed facing front-on to the scene to reduce visible shadow size.
 A plain white covering was placed on the working surface to reflect extra ambient light.
 
 A large board was placed behind the scene to provide a constant background depth and scene elements were elevated using platforms where necessary.
@@ -65,8 +67,9 @@ Shutter Delay & 10s \\
 The shutter delay was set to 10s to allow the motion platform to reach a stable velocity before the picture was taken.
 Once the camera countdown was started, the motion platform was initiated from a Laptop running Matlab version R2009 and the RWHT Mindstorms Toolbox \cite{rwth2007toolbox}.
 
-The captured images were transfered to an computer using the standard Lytro Desktop companion software, version 3.1.1 for Mac.
-A late 2011 model Apple Mac Book Air running OSX 10.9.3 was used for image processing and version 0.2 of the Light Field Toolbox \cite{dansereau2013toolbox} was used for light field manipulation and processing in Matlab.
+Images were transfered to an computer using the standard Lytro Desktop companion software (version 3.1.1 for OSX).
+A 2011 model Apple Mac Book Air running OSX 10.9.3 was used for image processing.
+Version 0.2 of the Light Field Toolbox \cite{dansereau2013toolbox} was used for light field manipulation and processing in Matlab.
 The image decoding process used by the LF toolbox is described in \cite{dansereau2013decoding}.
 
 Lytro \enquote*{.lfp} files were converted to raw image files and metadata files using the python-lfp-reader Python scripts (version 0.2) \cite{esfahbod2013python}, as per the Matlab LF Toolbox instructions \cite{dansereau2013toolbox}.
@@ -81,7 +84,8 @@ Camera velocity was measured using the Lego Mindstorms motor encoders on the mot
 
 The exposure time and focal length were read from the Lytro image metadata, and a scaling factor for the Lytro focal length determined experimentally by comparing observed blur lengths with real-world depths, using equation \ref{eq:blur_width_simple}.
 
-To de-blur the light field, all possible sup-aperture slices were taken and individually deconvoled once at every scene depth using the Richardson-Lucy method.
+To de-blur the light field, all possible sup-aperture slices were taken and individually deconvoled once at every scene depth.
+This was done using the Richardson-Lucy method due to it's relatively quick processing time and characteristically good performance.
 The Matlab \enquote*{deconvlucy} command was used for the Richardson-Lucy de-blurring implementation.
 The deconvoled sub-aperture images were then combined, using image masks computed for each depth map depth.
 The deblurred sub-aperture images were combined such that an optimal PSF was used for each pixel within the final image.
@@ -95,7 +99,10 @@ Two quantitative measures were used to compare de-blurred light fields.
 A \enquote*{Q-Factor} was computed to measure the increase in image sharpness and the Root-Mean-Square Error (RMSE) was estimated to measure the degree of noise amplification introduced by the deconvolution.
 
 Without a ground truth image, a simple and well defined measure of \enquote*{image sharpness} is not easy to formulate, as evidenced by the complexity of image sharpness standards \cite{imatest2014sharpness}.
-Despite this, our Q factor definition served to demonstrate the quantifiable recovery of high-frequency image content after de-blurring.
+The original intention was to use the DSLR camera for capturing ground truth images, however due to the short depth range within the scene, the DSLR camera was unable to focus on all objects within the scene.
+As such, a Q-factor had to be derived without access to a ground truth image.
+The Q-factor definition used met this requirement and served to demonstrate the quantifiable recovery of high-frequency image content after de-blurring.
+
 The Q-Factor used here was computed by summing absolute pixel intensities after applying a vertical Prewitt edge detection filter.
 These sums were then normalised relative to the original blurred image Q-factor.
 This had the effect of measuring the increase in the intensity of high-frequency components in the image.

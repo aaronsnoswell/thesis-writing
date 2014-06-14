@@ -300,23 +300,35 @@ We compare the results of our depth-aware deconvolution technique with those of 
 \label{sec:light_field_depth_estimation}
 
 As shown in section \ref{sec:motion_blur_formation}, de-blurring at all scene depths requires a depth map calibrated to be in real-world units such as meters.
-It was found that the Lytro firmware and/or desktop software computes a low-quality depth map from the Lytro Light Field images, returning integer depth values in an unknown or arbitrary unit.
-This depth map can be located within the Lytro image storage database and is contained in Lytro image files with the name \enquote*{dm.lfp}.
+It was found that the Lytro firmware and/or desktop software computes a low-quality depth map from the Lytro Light Field images, returning integer depth values in an arbitrary unit.
+These depth maps are located within the Lytro image storage database and is contained in Lytro image files with the name \enquote*{dm.lfp}.
 The \enquote*{lfpsplitter} tool \cite{patel2013lfptools} was used to extract this data into a single-column text file format, after which Matlab was used to reshape this data into a depth map.
 To correctly re-shape the data, it had to be read in standard raster order (left to right, top to bottom), with an expected size of 330x330.
 
 Further research and analysis is needed to more fully quantify the Lytro depth response function, however an initial investigation was performed using several Lytro images.
-Sample points from within the Lytro depth maps were compared with real-world depth estimates for a range of real-world scenes, with the scene depth ranging up to 8 meters.
+Sample points from within the Lytro depth maps were compared with real-world depth estimates for a range of real-world scenes, with the scene depth ranging up to \nicetilde2.5 meters.
 Our initial analysis showed that after the rejection of outliers, the Lytro depth response \enquote*{$D$} was a linear function with real-world object depth \enquote*{$Z$}, however the specific linear function varied as the overall scene depth range changed.
-For example, scenes with an overall depth range less than 0.5m were found to be a good fit ($R^2 = 0.69$) with the linear function $Z(D) = 0.0291 \times D + 0.2114$, while scenes with a depth range of 0.5-2m were a moderately good fit ($R^2 = 0.53$) with the function $Z(D) = 0.1436 \times D + 0.8597$.
+For example, scenes with an overall depth range less than 0.5m were found to be a good fit ($R^2 = 0.69$) with the linear function $Z(D) = 0.0291 D + 0.2114$, while scenes with a depth range of 0.5-2.5m were a good fit ($R^2 = 0.7$) with the function $Z(D) = 0.1503 D + 0.781$.
 Figure \ref{fig:depth_real_world_vs_lytro_response} shows these results in graph format.
 
 \begin{figure}[h]
 \centering
-\caption[Lytro depth response vs. real-world depth]{Lytro depth response vs. real-world depth. The data has been binned into three categories based on overall scene depth range.}
+\caption[Lytro depth response vs. real-world depth]{Lytro depth response vs. real-world depth. The data has been binned into two categories based on overall scene depth range.}
 \label{fig:depth_real_world_vs_lytro_response}
 \includegraphics[width=\textwidth]{depth_real_world_vs_lytro_response.pdf}
 \end{figure}
+
+Thus, if prior information is available about the overall depth range of the scene, the Lytro depth map data can be calibrated to metric units;
+
+\begin{equation}
+\label{eq:lytro_dm_to_metric}
+Z(D) = \begin{cases}
+	0.0291 D + 0.2114, & Z_{max} < 0.5m. \\
+	0.1503 D + 0.781, & 0.5 \leq Z_{max} < 2.5m. \\
+\end{cases}
+\end{equation}
+
+Insufficient data was collected for scenes with depth beyond 2.5 meters to characterise the depth response in those regions.
 
 It was found experimentally that the Lytro-generated depth maps have a minimum recoverable depth range of \nicetilde5cm and that the presence of glare prevents accurate depth estimation (see Figure \ref{fig:ruler_glare_min_dist}).
 Furthermore, it was found that the presence of motion blur or lack of scene structure reduced the quality of the depth map (see Figures \ref{fig:depth_lack_of_structure} and \ref{fig:blur_corrupts_depth}).
