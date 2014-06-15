@@ -29,13 +29,17 @@
 % Used to force figures to be in their respective sections
 \usepackage[section]{placeins}
 
-
+% Set up caption spacing
 \captionsetup[table]{skip=2pt}
 \captionsetup[figure]{skip=2pt}
 
 % Set image path
 \graphicspath{{./images/}}
 
+% Penalise orphans (singe lines at the bototm of a page)
+% and widows (single lines at the bottom of a page)
+\widowpenalty=10000
+\clubpenalty=10000
 
 % Set spacing and 'graph indentation
 \doublespacing

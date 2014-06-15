@@ -19,32 +19,38 @@ The computed Q-factors and estimated RMSE noise levels are shown in Tables \ref{
 
 \begin{table}[h]
 \centering
-\caption[De-blurred light field Q Factors]{De-blurred light field Q Factors (larger indicates more high-frequency content)}
+\caption[De-blurred light field Q Factors]{
+De-blurred light field Q Factors.
+Increased high-frequency content is indicated by larger values (largest result in \textbf{bold}).
+}
 \label{tab:deblurred_light_field_q_factors}
 \begin{tabular}[h]{r | c c c}
-                & Milo & House & Bears \\
+                & Milo          & House          & Bears         \\
 \hline
-Original        & 1.00 & 1.00  & 1.00 \\
-Ours            & 2.26 & 1.56  & 1.68 \\
-Blind           & 1.60 & 1.92  & 1.69 \\
-Regularised     & 2.23 & 2.68  & 2.53 \\
-Richardson-Lucy & 1.62 & 1.93  & 1.69 \\
+Original        & 1.00          & 1.00           & 1.00          \\
+Ours            & \textbf{2.26} & 1.56           & 1.68          \\
+Blind           & 1.60          & 1.92           & 1.69          \\
+Regularised     & 2.23          & \textbf{2.68}  & \textbf{2.53} \\
+Richardson-Lucy & 1.62          & 1.93           & 1.69          \\
 \end{tabular}
 \end{table}
 
 
 \begin{table}[h]
 \centering
-\caption[De-blurred light field RMSE Estimates]{De-blurred light field RMSE Estimates (smaller indicates less image noise)}
+\caption[De-blurred light field RMSE Estimates]{
+De-blurred light field RMSE Estimates.
+Less image noise indicated by smaller values (smallest result in \textbf{bold}).
+}
 \label{tab:deblurred_light_field_rmse_estimates}
 \begin{tabular}[h]{r | c c c}
-                & Milo  & House & Bears \\
+                & Milo           & House         & Bears         \\
 \hline
-Original        & 3.96  & 2.72 & 3.18 \\
-Ours            & 5.90  & 3.94 & 4.15 \\
-Blind           & 9.06  & 4.98 & 4.14 \\
-Regularised     & 11.23 & 7.22 & 5.78 \\
-Richardson-Lucy & 9.19  & 4.99 & 4.15 \\
+Original        & 3.96           & 2.72          & 3.18          \\
+Ours            & \textbf{5.90}  & \textbf{3.94} & 4.15          \\
+Blind           & 9.06           & 4.98          & \textbf{4.14} \\
+Regularised     & 11.23          & 7.22          & 5.78          \\
+Richardson-Lucy & 9.19           & 4.99          & 4.15          \\
 \end{tabular}
 \end{table}
 
@@ -58,7 +64,7 @@ Selected light field images of the three scenes are shown in Figures \ref{fig:re
 \caption[De-blurring results - \enquote*{Milo} Scene]{
 De-blurring results - \enquote*{Milo} Scene.
 ISO Setting: 75, Exposure time: 1/2s.
-a) Original blurred scene b) Lytro depth map normalised for display c) Our de-blurred result, and results from 2D blind (d), regularised (e) and Richardson-Lucy (f) deconvolution.
+a) Original blurred scene b) Lytro depth map c) Our de-blurred result, and results from 2D blind (d), regularised (e) and Richardson-Lucy (f) deconvolution.
 Note that in (c) the text on the ground is sharp at all scene depths.
 }
 \label{fig:results_milo_long_b}
@@ -70,7 +76,7 @@ Note that in (c) the text on the ground is sharp at all scene depths.
 \caption[De-blurring results - \enquote*{House} Scene]{
 De-blurring results - \enquote*{House} Scene.
 ISO Setting: 207, Exposure time: 1/6.4s.
-a) Original blurred scene b) Lytro depth map normalised for display c) Our de-blurred result, and results from 2D blind (d), regularised (e) and Richardson-Lucy (f) deconvolution.
+a) Original blurred scene b) Lytro depth map c) Our de-blurred result, and results from 2D blind (d), regularised (e) and Richardson-Lucy (f) deconvolution.
 Note the ringing in the background is more pronounced in (d)-(f) than in our de-blurred image (c).
 }
 \label{fig:results_house_short}
@@ -82,8 +88,8 @@ Note the ringing in the background is more pronounced in (d)-(f) than in our de-
 \caption[De-blurring results - \enquote*{Bears} Scene]{
 De-blurring results - \enquote*{Bears} Scene.
 ISO Setting: 113, Exposure time: 1/2s.
-a) Original blurred scene b) Lytro depth map normalised for display c) Our de-blurred result, and results from 2D blind (d), regularised (e) and Richardson-Lucy (f) deconvolution.
-In these results there is little difference between images (c) and (d-f) due to the lack of significant scene depth change, and the poor quality depth map.
+a) Original blurred scene b) Lytro depth map c) Our de-blurred result, and results from 2D blind (d), regularised (e) and Richardson-Lucy (f) deconvolution.
+There is little difference between images (c) and (d-f) due to the lack of depth variation and the poor quality depth map.
 }
 \label{fig:results_bears_short}
 \end{figure}
@@ -97,7 +103,7 @@ Table \ref{tab:deblurred_light_field_q_factors} shows that the Q factor increase
 Additionally, the Q-factors from the 2D deconvolution methods increased for each scene.
 This indicated that after de-blurring, the light field images contained a greater proportion of high-frequency content in the horizontal direction.
 This can be seen visually in the de-blurred light field images.
-Note that, as stated in section \ref{sec:quantitative_analysis}, the Q-factor does not discriminate between high-frequency content due to a lack of motion smear and high-frequency content due to false ringing edges created by noise amplification.
+Note that, as stated in section \ref{sec:analysis}, the Q-factor does not discriminate between high-frequency content due to a lack of motion smear and high-frequency content due to false ringing edges created by noise amplification.
 This is highlighted for example in Figure \ref{fig:results_milo_long_b}e, where a Q-factor of 2.23 was observed, yet the image is completely corrupted by ringing artifacts, instead of being a sharp image of the ground truth scene.
 
 For this reason the RMSE noise estimate was used as a second quantitative metric.
@@ -127,7 +133,7 @@ The DSLR was left in-place for all images to ensure the motion platform velocity
 \section{Implications}
 \label{sec:implications}
 
-By analysing the projective geometry camera equation (Equation \ref{eq:camera_projection}), we have shown that real-world depth measurements can be combined with knowledge of a camera trajectory and camera intrinsics to compute 3D point-spread functions.
+By analysing the projective geometry camera equation (Equation \ref{eq:camera_projection}), we have shown that metric depth measurements can be combined with knowledge of a camera trajectory and camera intrinsics to compute 3D point-spread functions.
 This was verified experimentally, as shown in Figure \ref{fig:blur_vs_depth}.
 We suggest that a 3D PSF is better than a 2D PSF as it allows for depth-aware deconvolution.
 This type of deconvolution allows an optimal PSF to be used for all parts of an image, reducing ringing artifacts and increasing the quality of the de-blurred image.
@@ -166,7 +172,7 @@ Future work could explore if these PSFs can be used in the same way for de-blurr
 
 In the experiments performed the camera velocity used to compute the PSF was supplied \emph{a-priori}.
 In a robotic system this information could potentially come from encoders, an inertial measurement unit or other velocity sensors.
-Alternately, future work could explore the possibility of using blind deconvolution methods to simultaneously recover the real-world camera velocity \emph{and} high-frequency image details.
+Alternately, future work could explore the possibility of using blind deconvolution methods to simultaneously recover the camera velocity \emph{and} high-frequency image details.
 
 The images used for in these experiments were all captured in a controlled environment.
 Real-world implementations of this de-blurring method would need to be tested for robustness against lighting and other scene variations.

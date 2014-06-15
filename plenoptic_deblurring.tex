@@ -15,6 +15,7 @@ In most computer vision literature the phase and polarisation elements are ignor
 P = P(V_x, V_y, V_z, \theta, \phi, t, \lambda)
 \end{equation}
 
+\noindent
 where $V_x$, $V_y$ and $V_z$ are the spatial dimensions, $\theta$ and $\phi$ are the angular dimensions, $t$ is the temporal dimension and $\lambda$ describes the colour of the ray. 
 
 The plenoptic function in this form was first described by Adelson and Bergen in 1991 \cite{adelson1991plenoptic}.
@@ -122,6 +123,7 @@ To do this, the homogeneous projective geometry equation was used;
 k \boldsymbol{x} = \boldsymbol{K} \left[~\boldsymbol{R}~|~\boldsymbol{t}~\right] \boldsymbol{X}
 \end{equation}
 
+\noindent
 where $k$ is the homogeneous scaling constant, $\boldsymbol{x}$ is the image-space point location, $\boldsymbol{K}$ is the so-called \enquote*{camera intrinsic matrix} that accounts for camera distortions, $\boldsymbol{R}$ is the 3x3 camera rotation matrix,  $\boldsymbol{t}$ is the camera's 3x1 world-frame translation vector and $\boldsymbol{X}$ is the world-frame point location.
 
 Expanding the matrix and vector terms, equation \ref{eq:camera_projection} is reached.
@@ -179,7 +181,8 @@ Finally, if we then assume square sensor pixels with no sensor skew, and an alig
 w = \frac{f}{Z} v_c t_e
 \end{equation}
 
-Where $f$ is the focal length of the camera.
+\noindent
+where $f$ is the focal length of the camera.
 This equation describes the width of the linear motion blur created by a point source at depth $Z$ within the scene for a moving camera.
 Note that the blur width is proportional with the camera focal length, velocity and exposure time, and inversely proportional with depth.
 The inverse relation with scene depth correlates with the intuitive expectation; objects further away translate less in an image when the camera moves.
@@ -196,7 +199,7 @@ This is shown visually in Figure \ref{fig:psf_3d}.
 
 Equation \ref{eq:blur_width_simple} was verified experimentally by taking several photos with a Lytro camera at a controlled velocity and measuring the blur width and depth of objects within the scene.
 Only the central sub-aperture image from the light field was used for simplicity.
-Figure \ref{fig:blur_vs_width} shows the measured results along with the predicted curve.
+Figure \ref{fig:blur_vs_depth} shows the measured results along with the predicted curve.
 
 \begin{figure}[h]
 \centering
@@ -230,6 +233,7 @@ Writing this in the frequency domain, we get
 I(f) = F(f) \times G(f)
 \end{equation}
 
+\noindent
 where $I$ is the observed image, $F$ is the original image and $G$ is the Fourier transform of the PSF, the so-called Optical Transfer Function (OTF).
 Note that in the frequency domain, the convolution operator (\textasteriskcentered) is a simple element-wise multiplication, and is subsequently computationally fast.
 
@@ -240,6 +244,7 @@ Supposing that the function $G$ can be found, it should theoretically be possibl
 F(f) = \frac{I(f)}{G(f)}
 \end{equation}
 
+\noindent
 where element-wise division is used, and the inverse Fourier transform of $F$ is taken.
 Unfortunately, in practice this is not possible for two reasons; firstly, $G$ will contain zeros that cause the values of $F$ to go to infinity.
 Setting $F$ to zero in these regions will introduce artifacts.
@@ -277,6 +282,7 @@ Applied to image processing, Wiener deconvolution can be written as
 F(f) = I(f) \left( \frac{G(f)^* S(f)}{\left| G(f) \right|^2 S(f) + N(f) } \right)
 \end{equation}
 
+\noindent
 where $S$ and $N$ are the mean spectral power densities of observed image $i$ and the noise $N$ respectively and $*$ denotes complex conjugation.
 As can be seen, at frequencies with high noise, the Wiener filter suppresses the output, $F$ reducing the amplification of noise that regularised deconvolution suffers from.
 Winer deconvolution has the drawback that the spectral content of the image and noise must be known, or estimated.
@@ -299,21 +305,22 @@ We compare the results of our depth-aware deconvolution technique with those of 
 \section{Light Field Depth Estimation}
 \label{sec:light_field_depth_estimation}
 
-As shown in section \ref{sec:motion_blur_formation}, de-blurring at all scene depths requires a depth map calibrated to be in real-world units such as meters.
+As shown in section \ref{sec:motion_blur_formation}, de-blurring at all scene depths requires a depth map calibrated to be in metric units such as meters.
 It was found that the Lytro firmware and/or desktop software computes a low-quality depth map from the Lytro Light Field images, returning integer depth values in an arbitrary unit.
 These depth maps are located within the Lytro image storage database and is contained in Lytro image files with the name \enquote*{dm.lfp}.
 The \enquote*{lfpsplitter} tool \cite{patel2013lfptools} was used to extract this data into a single-column text file format, after which Matlab was used to reshape this data into a depth map.
 To correctly re-shape the data, it had to be read in standard raster order (left to right, top to bottom), with an expected size of 330x330.
+In the resulting depth maps, lower (darker) values indicate objects closer to the camera.
 
 Further research and analysis is needed to more fully quantify the Lytro depth response function, however an initial investigation was performed using several Lytro images.
-Sample points from within the Lytro depth maps were compared with real-world depth estimates for a range of real-world scenes, with the scene depth ranging up to \nicetilde2.5 meters.
-Our initial analysis showed that after the rejection of outliers, the Lytro depth response \enquote*{$D$} was a linear function with real-world object depth \enquote*{$Z$}, however the specific linear function varied as the overall scene depth range changed.
+Sample points from within the Lytro depth maps were compared with metric depth estimates for a range of scenes, with the scene depth ranging up to \nicetilde2.5 meters.
+Our initial analysis showed that after the rejection of outliers, the Lytro depth response \enquote*{$D$} was a linear function with metric object depth \enquote*{$Z$}, however the specific linear function varied as the overall scene depth range changed.
 For example, scenes with an overall depth range less than 0.5m were found to be a good fit ($R^2 = 0.69$) with the linear function $Z(D) = 0.0291 D + 0.2114$, while scenes with a depth range of 0.5-2.5m were a good fit ($R^2 = 0.7$) with the function $Z(D) = 0.1503 D + 0.781$.
 Figure \ref{fig:depth_real_world_vs_lytro_response} shows these results in graph format.
 
 \begin{figure}[h]
 \centering
-\caption[Lytro depth response vs. real-world depth]{Lytro depth response vs. real-world depth. The data has been binned into two categories based on overall scene depth range.}
+\caption[Lytro depth response vs. metric depth]{Lytro depth response vs. metric depth. The data has been binned into two categories based on overall scene depth range.}
 \label{fig:depth_real_world_vs_lytro_response}
 \includegraphics[width=\textwidth]{depth_real_world_vs_lytro_response.pdf}
 \end{figure}
@@ -322,12 +329,14 @@ Thus, if prior information is available about the overall depth range of the sce
 
 \begin{equation}
 \label{eq:lytro_dm_to_metric}
-Z(D) = \begin{cases}
-	0.0291 D + 0.2114, & Z_{max} < 0.5m. \\
-	0.1503 D + 0.781, & 0.5 \leq Z_{max} < 2.5m. \\
+Z(D, \hat{Z}) = \begin{cases}
+	0.0291 D + 0.2114, & \hat{Z} < 0.5m. \\
+	0.1503 D + 0.781, & 0.5 \leq \hat{Z} < 2.5m. \\
 \end{cases}
 \end{equation}
 
+\noindent
+where $\hat{Z}$ is the \emph{a-priori} rough scene depth estimate.
 Insufficient data was collected for scenes with depth beyond 2.5 meters to characterise the depth response in those regions.
 
 It was found experimentally that the Lytro-generated depth maps have a minimum recoverable depth range of \nicetilde5cm and that the presence of glare prevents accurate depth estimation (see Figure \ref{fig:ruler_glare_min_dist}).
@@ -338,25 +347,37 @@ The reduction in quality due to glare is expected due to the lambertian scene as
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{ruler_glare_min_dist.pdf}
-\caption[Minimum depth map distance and the effect of glare]{An example light field image, and the Lytro depth map response. Note the lack of depth data where glare is present, and below Z = 5cm.}
+\caption[Minimum depth map distance and the effect of glare]{
+An example light field image, and the Lytro depth map response, normalised to the range [0, 1] for display.
+Darker values are closer to the camera.
+Note the lack of depth data where glare is present, and below Z = 5cm.
+}
 \label{fig:ruler_glare_min_dist}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{blur_corrupts_depth.png}
-\caption[Motion Blur Corrupts Lytro Depth Estimation]{The same scene photographed three times with the Lytro camera, with progressively more motion blur. Note the reduction in the quality and consistency of the depth response.}
+\caption[Motion Blur Corrupts Lytro Depth Estimation]{
+The same scene photographed three times with the Lytro camera, with progressively more motion blur.
+Note the reduction in the quality and consistency of the depth response.
+Depth maps have been normalised to the range [0, 1] for display, and darker values are closer to the camera.
+}
 \label{fig:blur_corrupts_depth}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{depth_lack_of_structure.png}
-\caption[Lack of Scene Structure Corrupts Lytro Depth Estimation]{An example light field image and the Lytro depth response. Note the lack of clear structure in some parts of the image (e.g. on the stuffed toy's face and body, and in the background) results in large regions without depth variation, despite the presence of real-world depth change.}
+\caption[Lack of Scene Structure Corrupts Lytro Depth Estimation]{
+An example light field image and the Lytro depth response, normalised to the range [0, 1] for display.
+Darker values are closer to the camera.
+Note the lack of clear structure in some parts of the image (e.g. on the stuffed toy's face and body, and in the background) results in large regions without depth variation, despite the presence of metric depth change.
+}
 \label{fig:depth_lack_of_structure}
 \end{figure}
 
-These findings suggested that if rough knowledge of the scene depth can be obtained, it is possible to calibrate the Lytro depth maps into units of meters, allowing real-world depths to be estimated.
+These findings suggested that if rough knowledge of the scene depth can be obtained, it is possible to calibrate the Lytro depth maps into metric units.
 It is suggested that in a real-world application, an infra-red/ultrasound based focal length sensor (as found on many commercial cameras) could be used for this purpose.
 Alternately, user-supplied a-priori knowledge of a robotic operating environment, or a user-selected \enquote*{scene} setting on a commercial camera (e.g. outdoors, indoors, portrait etc.) could be used here.
 
@@ -366,12 +387,13 @@ Using the supplied Matlab source code \cite{tao2013depthwebsite}, depth maps wer
 It is possible this was due to their code being tuned specifically for their Lytro camera, however due to discovering the more readily available Lytro depth data, this possibility was not explored further.
 
 
-\begin{figure}
+\begin{figure}[!h]
 \centering
 \includegraphics[width=7cm]{defocus_correspondence_depth.png}
 \caption[Depth Map from combining Defocus and Correspondence]{
 An example depth map result from using Defocus and Correspondence by Tao et al. \cite{tao2013depthwebsite}.
 The input light field is the same as in Figure \ref{fig:depth_lack_of_structure}.
+Darker values are supposedly closer to the camera, although the depth map does not match the real world depths.
 }
 \label{fig:defocus_correspondence_depth}
 \end{figure}

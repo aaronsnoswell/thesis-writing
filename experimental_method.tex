@@ -82,7 +82,7 @@ The Lytro depth maps were extracted from the Lytro desktop software image databa
 
 Camera velocity was measured using the Lego Mindstorms motor encoders on the motion platform after initial calibration of the platform.
 
-The exposure time and focal length were read from the Lytro image metadata, and a scaling factor for the Lytro focal length determined experimentally by comparing observed blur lengths with real-world depths, using equation \ref{eq:blur_width_simple}.
+The exposure time and focal length were read from the Lytro image metadata, and a scaling factor for the Lytro focal length determined experimentally by comparing observed blur lengths with metric depths, using equation \ref{eq:blur_width_simple}.
 
 To de-blur the light field, all possible sup-aperture slices were taken and individually deconvoled once at every scene depth.
 This was done using the Richardson-Lucy method due to it's relatively quick processing time and characteristically good performance.
@@ -92,8 +92,8 @@ The deblurred sub-aperture images were combined such that an optimal PSF was use
 This Matlab code for this process is fully described in Appendix XXXX.
 
 
-\section{Quantitative Analysis}
-\label{sec:quantitative_analysis}
+\section{Analysis}
+\label{sec:analysis}
 
 Two quantitative measures were used to compare de-blurred light fields.
 A \enquote*{Q-Factor} was computed to measure the increase in image sharpness and the Root-Mean-Square Error (RMSE) was estimated to measure the degree of noise amplification introduced by the deconvolution.
@@ -114,7 +114,8 @@ Q = \frac{\sum_{x=1}^{W} \sum_{y=1}^{H}
 \label{eq:q_factor}}{Q_b}
 \end{equation}
 
-where $Q_b$ is the Q-Factor for the original image, $W$ and $H$ are the width and height of the image, $I$ is the de-blurred image, and $G$ is the Prewitt vertical edge detection kernel.
+\noindent
+where $Q_b$ is the Q-Factor for the original image, $W$ and $H$ are the width and height of the image, $I$ is the de-blurred image, and $G$ is the Prewitt vertical edge detection kernel;
 
 \begin{equation}
 G = 
@@ -126,6 +127,7 @@ G =
 \label{eq:prewitt_filter}
 \end{equation}
 
+\noindent
 (the vertical detection kernel was used due to the presence of horizontal motion blur in the tests performed here).
 This Q-factor definition had the downside of also measuring noise content.
 Thus, noisy images could potentially score higher than clean, sharp images.
@@ -138,6 +140,7 @@ The RMSE was then computed using
 R = \sqrt{ \sum_{x=1}^{W} \sum_{y=1}^{H} (I(x,y) - m)^2 }
 \end{equation}
 
-Where $W$ and $H$ are the width and height of the region respectively, $I$ is the region image and $m$ is the mean gray level within the region.
+\noindent
+where $W$ and $H$ are the width and height of the region respectively, $I$ is the region image and $m$ is the mean gray level within the region.
 This metric gives an estimate of the additive noise content in the image prior to de-blurring, and an estimate of the noise (ringing and additive) in the image after de-blurring.
 
