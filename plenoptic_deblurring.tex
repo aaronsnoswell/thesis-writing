@@ -290,7 +290,7 @@ We compare the results of our depth-aware deconvolution technique with those of 
 \section{Light Field Depth Estimation}
 \label{sec:light_field_depth_estimation}
 
-As shown in section \ref{sec:motion_blur_formation}, de-blurring at all scene depths requires a depth map calibrated to be in metric units such as meters.
+As shown in Section \ref{sec:motion_blur_formation}, de-blurring at all scene depths requires a depth map calibrated to be in metric units such as meters.
 It was found that the Lytro firmware and/or desktop software computes a low-quality depth map from the Lytro Light Field images, returning integer depth values in an arbitrary unit.
 These depth maps are located within the Lytro image storage database and are contained in Lytro image files with the name \enquote*{dm.lfp}.
 The \enquote*{lfpsplitter} tool \cite{patel2013lfptools} was used to extract this data into a single-column text file format, after which Matlab was used to reshape this data into a depth map.

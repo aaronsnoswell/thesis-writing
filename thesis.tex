@@ -1,8 +1,8 @@
-\documentclass[pdftex,12pt,a4paper,twoside]{report}
+\documentclass[pdftex,12pt,a4paper,twoside,openright]{report}
 
 % Aaron Snsowell Thesis Document
 
-\usepackage[lmargin=2cm,rmargin=3cm,tmargin=2cm,bmargin=2cm]{geometry}
+\usepackage[rmargin=2cm,lmargin=3cm,tmargin=2cm,bmargin=2cm]{geometry}
 \usepackage{setspace}
 \usepackage{framed}
 \usepackage[usenames,dvipsnames]{xcolor}
@@ -58,31 +58,52 @@
 \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
 \renewcommand{\sectionmark}[1]{\markright{#1}{}}
 
-\fancyhead[RO, LE]{}
-\fancyhead[LO]{\small Light Field Deblurring for Robotics Applications}
-\fancyhead[RE]{\small \leftmark~(\rightmark)}
+\fancyhead[RE, LO]{}
+\fancyhead[RO]{\small \leftmark~(\rightmark)}
+\fancyhead[LE]{\small Light Field De-blurring for Robotics Applications}
 \fancyfoot[c]{\small \thepage}
 
 \begin{document}
 
 % Title page
+
 \input{./title}
 
+\clearpage{\thispagestyle{empty}\cleardoublepage}
+\input{./declaration}
+
 % Other pages
+
+\newgeometry{
+	top=2cm,
+	bottom=2cm,
+	lmargin=2cm,
+	rmargin=3cm
+}
 \input{./abstract}
+
+\newgeometry{
+	top=2cm,
+	bottom=2cm,
+	lmargin=3cm,
+	rmargin=2cm
+}
 \input{./acknowledgements}
 
+\clearpage{\thispagestyle{empty}\cleardoublepage}
 \setcounter{page}{1}
-
 \tableofcontents
-\newpage
 
+\begingroup
+\let\clearpage\relax
+\thispagestyle{plain}
 \listoffigures
-\newpage
-
+\thispagestyle{plain}
 \listoftables
-\newpage
+\endgroup
 
+
+\clearpage{\thispagestyle{plain}\cleardoublepage}
 \input{./introduction}
 \input{./plenoptic_deblurring}
 \input{./experimental_method}

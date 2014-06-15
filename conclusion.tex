@@ -2,43 +2,29 @@
 \chapter{Conclusion}
 \label{chap:conclusion}
 
+Light field cameras are a revolutionary new form of imaging that enable many unconventional photographic techniques.
+While these cameras have seen applications in a range of areas, their use in robotics has not yet been fully realised.
+Unfortunately, some robotic navigation and computer vision systems suffer from the presence of motion blur in images.
 
+State of the art deconvolution de-blurring techniques have the major drawback that they only work for scenes with a constant depth.
+Robotic systems, especially ground or underwater mobile robots, typically operate in environments where the constant depth approximation is invalid.
+For this reason, a means for de-blurring images at all scene depths is desirable.
+Deriving a so-called \enquote*{depth-aware deonvolution} method was the focus of our research.
 
+By analysing the math describing projective camera geometry an equation describing the formation of motion blur in a translating camera was derived (Equation \ref{eq:blur_width_simple}).
+This equation was verified experimentally (Figure \ref{fig:blur_vs_depth}), indicating that calibrated depth data can be combined with camera intrinsic and trajectory information to perform depth-aware deconvolution.
 
+It was found experimentally that Lytro depth maps can be calibrated to metric units using an empirically-determined piecewise linear mapping (Equation  \ref{eq:lytro_dm_to_metric}), provided a rough scene depth is known.
 
+An experiment was performed to test the simplified case of linear camera motion blur at short distances.
+Depth-aware deconvolution was compared with traditional de-blurring methods for three scenes using household objects.
+The results showed that our method resulted in more high-frequency content and less ringing noise than 2D deconvolution methods.
+It was found our method's performance was on-par with 2D deconvolution in scenes with little scene structure, due to the adverse effect this has on depth map estimation.
 
+Our research made the assumption of linear camera motion, and relied on a rough scene depth estimate being supplied.
+Additionally, our experiments were performed in a controlled environment.
+Many areas for future work were identified, including adapting our method to generalised camera trajectories, utilising light field confidence information, collection of further data to confirm our results and the possibility of optimising our code to try and achieve real-time operation.
+Perhaps the most interesting area to explore in the future is the possibility of using blind deconvolution methods to recover camera velocity whilst simultaneously de-blurring the light field.
 
-
-
-
-
-
-
-
-
-
-\begin{itemize}
-\item Mini version of aims and discussion
-\item The contributions of this thesis are...
-\end{itemize}
-
-The aim of this experimental work was to investigate means for de-blurring light field images, with robotic applications of these images in mind.
-In Section \ref{sec:light_field_theory} we covered the relevant background regarding the development of the Plenoptic theory and practical light field cameras.
-The formation of motion blur in a camera was discussed in Section \ref{sec:motion_blur_formation}, and Equation \ref{eq:blur_width_simple} derived that gives the degree of linear motion blur present for a point source a given distance from a translating camera.
-This equation was verified experimentally using the central sub-aperture slice from a Lytro light field image, indicating that depth-aware deconvolution should be possible given calibrated depth data, and knowledge of the camera intrinsics and motion.
-A review of deconvolution de-blurring methods was given in Section \ref{sec:image_deblurring}, and a means for applying deconvolution to a light field image proposed.
-Finally, Section \ref{sec:light_field_depth_estimation} described the extraction and limitations of depth map data from a light field, and outlined a means for calibrating Lytro camera depth maps.
-
-An experiment was designed to test the depth-aware deconvolution method, and the experimental method was described in Chapter \ref{chap:experimental_method}.
-This included the design of a controlled scene and linear motion platform, image capture and processing, and the formulation of quantitative de-blurring quality metrics.
-
-The experimental results were discussed in chapter \ref{chap:results_and_discussion}.
-The quantitative metrics indicated that depth aware deconvolution results in a greater recovery of high-frequency content in an image, and that the ringing noise introduced was less than traditional 2D deconvolution methods.
-The benefit of depth aware deconvolution was most pronounced for scenes where an accurate depth map could be recovered.
-Lack of scene structure and lack of significant depth variation in the scene were highlighted as two causes for degraded depth map performance, and subsequently degraded de-blurring performance.
-
-The depth-aware deconvolution method will likely have applications in improving user satisfaction with light field and RGBD camera performance in the future.
-Furthermore, it was suggested that in some cases interactive user input may be used to improve de-blurring performance on images even when a depth map was not originally present.
-Finally, it is expected that depth aware deconvolution will have benefits for robotic navigation and computer vision applications going forward.
-
-Several areas for future research were outlined, including extending the experimental proof to arbitrary camera trajectories, testing the results in a non-controlled environment, integrating the available light field confidence data in the method, collecting more data to verify the results and finding means for more accurate depth recovery from the light field.
+Light field cameras have a host of potential applications in robotic systems.
+It is hoped that our research and work demonstrating the feasibility of depth-aware deconvolution will enable further use of this exciting new technology.

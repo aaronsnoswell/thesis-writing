@@ -2,11 +2,42 @@
 \chapter{Introduction}
 \label{chap:introduction}
 
-Need to write this.
+\section{Problem Statement}
+\label{sec:problem_statement}
 
-Final sentence should be 'the aims of this thesis were to...'
+Light field cameras are a revolutionary new type of imaging device that allow four-dimensional light data to be captured.
+Unfortunately, like traditional photos, light field images suffer from motion blur under certain conditions.
+In this thesis we present a novel adaptation of existing de-blurring methods that allows light field images to be de-blurred, even for scenes with significantly varying depths.
 
-Optional section: 'The Menu': In section X we show that blah.
-We then go on in section X to show blah foo bar.
-After this, using results from section X we show that X Y and Z are actually not equal.
-Etc etc etc.
+\section{Technical Gap}
+\label{sec:technical_gap}
+
+Existing deconvolution de-blurring methods have the significant drawback that they only work for scenes with a constant depth.
+Additionally, the application of deconvolution methods to light field images is yet to be documented in computer vision literature\footnote{Light field deconvolution has received limited attention regarding light field microscopy \cite{levoy2006microscopy}, however no documented evidence could be found regarding the use of deconvolution for \emph{de-blurring} a motion-blurred light field.}.
+
+Light field images are of interest due to the many innovative applications they enable.
+For example, light field cameras are presently popular for the ability to refocus images in software (e.g. the Lytro camera), however their applications for robotics are yet to be fully realised.
+Potential robotic applications include the ability to reduce the effects of fog, snow and other partial occluders \cite{dansereau2013plenoptic}, excellent low light performance and the ability to recover depth information from a compact sensor.
+
+Unfortunately, there are many robotic vision algorithms that rely on high-frequency image details to operate (for example any method relying on dense pixel matching or edge, line or shape detection).
+Motion blur obscures this high frequency content, and has the potential to limit the performance of these methods.
+In addition to this, there are many robotic scenarios where deconvolution de-blurring is inappropriate, due to the presence of large scene depth variation (e.g. ground or underwater vehicles).
+With these two limitations in mind, the aim of our research was to;
+
+\begin{enumerate}
+\item Explore means for de-blurring a motion-blurred light field image, and
+\item Do this, even in the presence of significant scene depth variation.
+\end{enumerate}
+
+\section{The Menu}
+\label{sec:the_menu}
+
+We begin in Chapter \ref{chap:plenoptic_deblurring} by giving an overview of the relevant theory of light field imaging.
+A theoretical means for de-blurring a light field is described in Section \ref{sec:motion_blur_formation}.
+This method is derived from a discussion of the formation of motion blur within a simplified camera and criticality, relies on the availability of a calibrated depth map.
+Section \ref{sec:light_field_depth_estimation} provides this key by discussing the problem of estimating depth from a light field image and calibrating this depth information to metric units.
+The ability to obtain calibrated depth maps from a light field concludes the theoretical section of this document and provides a complete framework for what we call \enquote*{depth-aware deconvolution} - that is, de-blurring a light field image at all scene depths.
+
+Chapter \ref{chap:experimental_method} describes our experiment, designed to test the simplified case of linear camera motion blur in shallow-depth, controlled environments.
+Chapter \ref{chap:results_and_discussion} details the success of our method, and highlights the potential applications, as well as the limitations and assumptions made.
+In addition, a number of areas for future research are identified.
